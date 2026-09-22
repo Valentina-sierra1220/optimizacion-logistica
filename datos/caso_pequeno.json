@@ -1,0 +1,12 @@
+{
+  "camiones": [
+    {"id": "C1", "capacidad": 20},
+    {"id": "C2", "capacidad": 15}
+  ],
+  "paquetes": [
+    {"id": "P1", "peso": 10},
+    {"id": "P2", "peso": 5},
+    {"id": "P3", "peso": 8},
+    {"id": "P4", "peso": 12}
+  ]
+}
