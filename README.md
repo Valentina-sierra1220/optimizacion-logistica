@@ -18,3 +18,21 @@ Ejemplo de la estructura de datos utilizada:
     {"id": "P3", "peso": 12}
   ]
 }
+
+
+
+
+
+
+
+
+
+---
+
+## 3. Análisis Empírico de Tiempos de Ejecución
+
+Se realizó una medición experimental de tiempos de ejecución variando la cantidad de paquetes ($n$) de 2 a 12. 
+
+![Gráfica de Tiempos de Ejecución](src/grafica_fuerza_bruta_logistica.png)
+
+Como se observa en la gráfica, el tiempo transcurrido aumenta de forma exponencial a medida que crece $n$. Esto confirma empíricamente la complejidad teórica del algoritmo de Fuerza Bruta ($O(m^n)$), demostrando que el tiempo de procesamiento se vuelve inviable para instancias grandes de paquetes.
