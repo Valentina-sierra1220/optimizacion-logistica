@@ -51,7 +51,7 @@ if __name__ == '__main__':
     print("--- PROBANDO LAS FUNCIONES AUXILIARES ---\n")
     
     # 1. Cargamos los datos del caso pequeño (usamos ../datos/ porque estamos dentro de src/)
-    camiones, paquetes = cargar_caso_prueba('datos/caso_pequeno.json')
+    camiones, paquetes = cargar_caso_prueba('datos/caso_pequeno.txt')
     
     print("Camiones cargados:", camiones)
     print("Paquetes cargados:", paquetes)
