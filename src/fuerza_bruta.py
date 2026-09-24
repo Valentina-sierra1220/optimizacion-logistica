@@ -33,6 +33,18 @@ def fuerza_bruta(paquetes,camiones):
     generar_asignaciones(0,{}) #0(1) inicial
     return soluciones, total_evaluadas #0(1)
 
+def validar_orden_entrega(orden, paquetes):
+    tiempo_actual = 8 #O(1)
+    for paquete in orden: #O(n)
+        for p in paquetes: #O(n)
+            if p["id"] == paquete:
+                datos_paquete = p
+                break
+
+        tiempo_llegada = tiempo_actual + 1
+
+
+
 
 
 def cargar_casos(ruta):
