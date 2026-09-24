@@ -1,0 +1,51 @@
+# Informe Técnico: Entrega 1 - Algoritmo de Fuerza Bruta
+**Asignatura:** Análisis y Diseño de Algoritmos  
+**Proyecto:** Optimización Logística - Asignación de Paquetes a Camiones  
+**Integrantes:** Valentina Sierra, María jose hincapie 
+**Fecha:** Septiembre 2026  
+
+---
+
+## 1. Introducción y Descripción del Problema
+
+El problema de optimización logística consiste en asignar un conjunto de $n$ paquetes a una flota de $m$ camiones, garantizando que el peso total asignado a cada vehículo no exceda su capacidad máxima permitida. 
+
+El objetivo general de esta primera entrega es implementar una solución exacta mediante el enfoque de **Fuerza Bruta**, validar su correcto funcionamiento y evaluar experimentalmente sus límites de escalabilidad espacio-temporal.
+
+---
+
+## 2. Formulación y Algoritmo de Fuerza Bruta
+
+### 2.1 Modelo y Restricciones
+* **Entradas:** 
+  * Flota de camiones $C = \{c_1, c_2, \dots, c_m\}$, donde cada camión $c_i$ tiene una capacidad máxima $W_i$.
+  * Conjunto de paquetes $P = \{p_1, p_2, \dots, p_n\}$, donde cada paquete $p_j$ posee un peso $w_j$.
+* **Restricción de Capacidad:**  
+  Para todo camión $c_i$, la suma de los pesos de los paquetes asignados a él debe ser menor o igual a su capacidad:
+  $$\sum_{p_j \in \text{camión } c_i} w_j \le W_i$$
+* **Salida:** Conjunto de todas las asignaciones válidas que cumplen la restricción de capacidad.
+
+### 2.2 Análisis de Complejidad Teórica
+El algoritmo explora el espacio de búsqueda completo generando todas las posibles combinaciones de asignación de paquetes a camiones. Dado que cada uno de los $n$ paquetes puede asignarse a cualquiera de los $m$ camiones:
+
+* **Complejidad Temporal:** $\mathcal{O}(m^n)$ — Crecimiento exponencial respectivo a la cantidad de paquetes.
+* **Complejidad Espacial:** $\mathcal{O}(n)$ para almacenar una asignación individual o $\mathcal{O}(m^n)$ para almacenar todas las combinaciones válidas en memoria[cite: 1].
+
+---
+
+## 3. Estructura de Datos y Casos de Prueba
+
+Las instancias del problema se definieron utilizando archivos en formato JSON estructurado dentro del directorio `datos/` (`caso_pequeno.txt`, `caso_mediano.txt`, `caso_grande.txt`)[cite: 1].
+
+```json
+{
+  "camiones": [
+    {"id": "C1", "capacidad": 30},
+    {"id": "C2", "capacidad": 30}
+  ],
+  "paquetes": [
+    {"id": "P1", "peso": 5},
+    {"id": "P2", "peso": 8},
+    {"id": "P3", "peso": 12}
+  ]
+}
