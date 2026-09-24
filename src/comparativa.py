@@ -13,7 +13,6 @@ def generar_caso_temporal(num_paquetes, num_camiones=2, capacidad_camion=30):
 def ejecutar_comparativa():
     cantidades_paquetes = range(2, 13)  # n de 2 a 12
     tiempos = []
-    total_combinaciones = []
 
     print("Iniciando medición empírica de tiempos de ejecución...")
 
@@ -35,7 +34,6 @@ def ejecutar_comparativa():
         
         
         tiempos.append(tiempo_ejecucion)
-        total_combinaciones.append(total)
 
         print(f"Paquetes (n={n}): Combinaciones={total} | Tiempo={tiempo_ejecucion:.6f}s")
 
