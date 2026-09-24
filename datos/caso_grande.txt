@@ -1,94 +1,134 @@
 {
   "camiones": [
-    {"id": "C1", "capacidad": 30},
-    {"id": "C2", "capacidad": 25},
-    {"id": "C3", "capacidad": 20},
-    {"id": "C4", "capacidad": 30}
+    {
+      "id": "C1",
+      "capacidad": 30,
+      "hora_inicio": 8
+    },
+    {
+      "id": "C2",
+      "capacidad": 25,
+      "hora_inicio": 8
+    },
+    {
+      "id": "C3",
+      "capacidad": 20,
+      "hora_inicio": 8
+    },
+    {
+      "id": "C4",
+      "capacidad": 30,
+      "hora_inicio": 8
+    }
   ],
   "paquetes": [
     {
       "id": "P1",
       "peso": 7,
       "destino": "D1",
-      "ventana_inicio": 8,
-      "ventana_fin": 10
+      "ventana_inicio": 9,
+      "ventana_fin": 11,
+      "tiempo_viaje": 1,
+      "tiempo_entrega": 1
     },
     {
       "id": "P2",
       "peso": 12,
       "destino": "D2",
-      "ventana_inicio": 9,
-      "ventana_fin": 11
+      "ventana_inicio": 10,
+      "ventana_fin": 12,
+      "tiempo_viaje": 1,
+      "tiempo_entrega": 1
     },
     {
       "id": "P3",
       "peso": 5,
       "destino": "D3",
-      "ventana_inicio": 10,
-      "ventana_fin": 12
+      "ventana_inicio": 11,
+      "ventana_fin": 13,
+      "tiempo_viaje": 2,
+      "tiempo_entrega": 1
     },
     {
       "id": "P4",
       "peso": 9,
       "destino": "D4",
-      "ventana_inicio": 11,
-      "ventana_fin": 13
+      "ventana_inicio": 12,
+      "ventana_fin": 14,
+      "tiempo_viaje": 2,
+      "tiempo_entrega": 1
     },
     {
       "id": "P5",
       "peso": 15,
       "destino": "D1",
-      "ventana_inicio": 8,
-      "ventana_fin": 10
+      "ventana_inicio": 9,
+      "ventana_fin": 11,
+      "tiempo_viaje": 1,
+      "tiempo_entrega": 1
     },
     {
       "id": "P6",
       "peso": 3,
       "destino": "D2",
-      "ventana_inicio": 9,
-      "ventana_fin": 11
+      "ventana_inicio": 10,
+      "ventana_fin": 12,
+      "tiempo_viaje": 1,
+      "tiempo_entrega": 1
     },
     {
       "id": "P7",
       "peso": 8,
       "destino": "D3",
-      "ventana_inicio": 10,
-      "ventana_fin": 12
+      "ventana_inicio": 11,
+      "ventana_fin": 13,
+      "tiempo_viaje": 2,
+      "tiempo_entrega": 1
     },
     {
       "id": "P8",
       "peso": 10,
       "destino": "D4",
-      "ventana_inicio": 11,
-      "ventana_fin": 13
+      "ventana_inicio": 12,
+      "ventana_fin": 14,
+      "tiempo_viaje": 2,
+      "tiempo_entrega": 1
     },
     {
       "id": "P9",
       "peso": 6,
       "destino": "D1",
-      "ventana_inicio": 8,
-      "ventana_fin": 10
+      "ventana_inicio": 9,
+      "ventana_fin": 11,
+      "tiempo_viaje": 1,
+      "tiempo_entrega": 1
     },
     {
       "id": "P10",
       "peso": 11,
       "destino": "D2",
-      "ventana_inicio": 9,
-      "ventana_fin": 11
+      "ventana_inicio": 10,
+      "ventana_fin": 12,
+      "tiempo_viaje": 1,
+      "tiempo_entrega": 1
     },
     {
       "id": "P11",
       "peso": 4,
       "destino": "D3",
-      "ventana_inicio": 10,
-      "ventana_fin": 12
+      "ventana_inicio": 11,
+      "ventana_fin": 13,
+      "tiempo_viaje": 2,
+      "tiempo_entrega": 1
     },
     {
       "id": "P12",
       "peso": 14,
       "destino": "D4",
-      "ventana_inicio": 11,
-      "ventana_fin": 13
+      "ventana_inicio": 12,
+      "ventana_fin": 14,
+      "tiempo_viaje": 2,
+      "tiempo_entrega": 1
     }
   ]
 }

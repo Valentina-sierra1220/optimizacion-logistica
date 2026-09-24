@@ -52,7 +52,7 @@ def ejecutar_comparativa():
     plt.savefig(ruta_grafica, dpi=300, bbox_inches='tight')
     plt.close()
 
-    print(f"\n✅ Análisis completado exitosamente. Gráfica guardada en '{ruta_grafica}'.")
+    print(f"\nAnálisis completado exitosamente. Gráfica guardada en '{ruta_grafica}'.")
 
 if __name__ == "__main__":
     ejecutar_comparativa()

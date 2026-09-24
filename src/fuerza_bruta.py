@@ -54,9 +54,12 @@ def cargar_casos(ruta):
         return datos["camiones"], datos["paquetes"]
 
 
+<<<<<<< HEAD
 
 if __name__ == "__main__":
     camiones, paquetes = cargar_casos("datos/caso_pequeno.txt")
 
     soluciones, total_evaluadas =fuerza_bruta(paquetes, camiones)
     print("soluciones encontradas", soluciones, total_evaluadas)
+=======
+>>>>>>> 226821f (docs: readme y entrega1.pdf actualizados)
