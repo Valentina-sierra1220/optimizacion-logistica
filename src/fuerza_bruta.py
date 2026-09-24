@@ -11,13 +11,16 @@ def es_asignacion_valida(asignacion, camiones, paquetes):
 
     return True
 def fuerza_bruta(paquetes,camiones):
+    soluciones= []
+    total_evaluadas = 0
     
     def generar_asignaciones(indice, asignacion):
+        nonlocal total_evaluadas
 
         if indice == len(paquetes):
+            total_evaluadas += 1
             if es_asignacion_valida(asignacion,camiones,paquetes):
-
-                print("asigancion completa", asignacion)
+                soluciones.append(asignacion)
             return
 
         paquete = paquetes[indice]
@@ -27,6 +30,7 @@ def fuerza_bruta(paquetes,camiones):
             generar_asignaciones(indice + 1,nueva_asignacion )
 
     generar_asignaciones(0,{})
+    return soluciones, total_evaluadas
 
 
 
@@ -41,4 +45,5 @@ def cargar_casos(ruta):
 if __name__ == "__main__":
     camiones, paquetes = cargar_casos("datos/caso_pequeno.txt")
 
-    fuerza_bruta(paquetes, camiones)
+    soluciones, total_evaluadas =fuerza_bruta(paquetes, camiones)
+    print("soluciones encontradas", soluciones, total_evaluadas)
