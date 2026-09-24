@@ -4,9 +4,33 @@
     {"id": "C2", "capacidad": 15}
   ],
   "paquetes": [
-    {"id": "P1", "peso": 10},
-    {"id": "P2", "peso": 5},
-    {"id": "P3", "peso": 8},
-    {"id": "P4", "peso": 12}
+    {
+      "id": "P1",
+      "peso": 10,
+      "destino": "D1",
+      "ventana_inicio": 8,
+      "ventana_fin": 10
+    },
+    {
+      "id": "P2",
+      "peso": 5,
+      "destino": "D2",
+      "ventana_inicio": 9,
+      "ventana_fin": 11
+    },
+    {
+      "id": "P3",
+      "peso": 8,
+      "destino": "D3",
+      "ventana_inicio": 10,
+      "ventana_fin": 12
+    },
+    {
+      "id": "P4",
+      "peso": 12,
+      "destino": "D4",
+      "ventana_inicio": 11,
+      "ventana_fin": 13
+    }
   ]
 }

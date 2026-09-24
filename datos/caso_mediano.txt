@@ -5,14 +5,62 @@
     {"id": "C3", "capacidad": 15}
   ],
   "paquetes": [
-    {"id": "P1", "peso": 8},
-    {"id": "P2", "peso": 6},
-    {"id": "P3", "peso": 10},
-    {"id": "P4", "peso": 4},
-    {"id": "P5", "peso": 12},
-    {"id": "P6", "peso": 7},
-    {"id": "P7", "peso": 5},
-    {"id": "P8", "peso": 9}
+    {
+      "id": "P1",
+      "peso": 8,
+      "destino": "D1",
+      "ventana_inicio": 8,
+      "ventana_fin": 10
+    },
+    {
+      "id": "P2",
+      "peso": 6,
+      "destino": "D2",
+      "ventana_inicio": 9,
+      "ventana_fin": 11
+    },
+    {
+      "id": "P3",
+      "peso": 10,
+      "destino": "D3",
+      "ventana_inicio": 10,
+      "ventana_fin": 12
+    },
+    {
+      "id": "P4",
+      "peso": 4,
+      "destino": "D4",
+      "ventana_inicio": 11,
+      "ventana_fin": 13
+    },
+    {
+      "id": "P5",
+      "peso": 12,
+      "destino": "D1",
+      "ventana_inicio": 8,
+      "ventana_fin": 10
+    },
+    {
+      "id": "P6",
+      "peso": 7,
+      "destino": "D2",
+      "ventana_inicio": 9,
+      "ventana_fin": 11
+    },
+    {
+      "id": "P7",
+      "peso": 5,
+      "destino": "D3",
+      "ventana_inicio": 10,
+      "ventana_fin": 12
+    },
+    {
+      "id": "P8",
+      "peso": 9,
+      "destino": "D4",
+      "ventana_inicio": 11,
+      "ventana_fin": 13
+    }
   ]
 }
 
