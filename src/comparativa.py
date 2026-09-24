@@ -25,7 +25,7 @@ def ejecutar_comparativa():
 
         # Medición de tiempo
         inicio = time.perf_counter()
-        fuerza_bruta(paquetes, camiones)  # Se ejecuta la función directamente sin asignación
+        _, total = fuerza_bruta(paquetes, camiones)  # Se ejecuta la función directamente sin asignación
         fin = time.perf_counter()
 
         # Restaurar la salida normal de la terminal
@@ -33,8 +33,6 @@ def ejecutar_comparativa():
 
         tiempo_ejecucion = fin - inicio
         
-        # Calcular m^n directamente desde comparativa
-        total = len(camiones) ** len(paquetes)
         
         tiempos.append(tiempo_ejecucion)
         total_combinaciones.append(total)
