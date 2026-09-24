@@ -21,9 +21,7 @@ def fuerza_bruta(paquetes,camiones):
             return
 
         paquete = paquetes[indice]
-        print("estoy procesando: ", paquete["id"])
         for camion in camiones:
-            print(paquete["id"],"->", camion["id"])
             nueva_asignacion = asignacion.copy()
             nueva_asignacion[paquete["id"]] = camion["id"]
             generar_asignaciones(indice + 1,nueva_asignacion )
@@ -41,8 +39,6 @@ def cargar_casos(ruta):
 
 
 if __name__ == "__main__":
-    print("Prueba de fuerza bruta")
-
     camiones, paquetes = cargar_casos("datos/caso_pequeno.txt")
 
     fuerza_bruta(paquetes, camiones)
