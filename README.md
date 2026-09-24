@@ -69,7 +69,7 @@
 >     {
 >       "id": "P4",
 >       "peso": 9,
->       "destino": "D4",s
+>       "destino": "D4",
 >       "ventana_inicio": 12,
 >       "ventana_fin": 14,
 >       "tiempo_viaje": 2,
