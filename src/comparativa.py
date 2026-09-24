@@ -50,7 +50,7 @@ def ejecutar_analisis_empirico():
     
     # Guardar en src/
     plt.savefig('src/grafica_fuerza_bruta_logistica.png', dpi=300)
-    print("\n✅ Gráfica guardada en 'src/grafica_fuerza_bruta_logistica.png'\n")
+    print("\n Gráfica guardada en 'src/grafica_fuerza_bruta_logistica.png'\n")
 
 if __name__ == '__main__':
     ejecutar_analisis_empirico()
