@@ -1,3 +1,5 @@
+import json
+
 def es_asignacion_valida(asignacion, camiones, paquetes):
     for camion in camiones:
         peso_total = 0
@@ -13,7 +15,9 @@ def fuerza_bruta(paquetes,camiones):
     def generar_asignaciones(indice, asignacion):
 
         if indice == len(paquetes):
-            print("asigancion completa", asignacion)
+            if es_asignacion_valida(asignacion,camiones,paquetes):
+
+                print("asigancion completa", asignacion)
             return
 
         paquete = paquetes[indice]
@@ -28,42 +32,17 @@ def fuerza_bruta(paquetes,camiones):
 
 
 
-   
+def cargar_casos(ruta):
+    with open(ruta, "r", encoding="utf-8") as archivo:
+        datos = json.load(archivo)
+
+        return datos["camiones"], datos["paquetes"]
+
 
 
 if __name__ == "__main__":
-    print("Prueba de validación")
+    print("Prueba de fuerza bruta")
 
-    camiones = [
-        {"id": "C1", "capacidad": 20},
-        {"id": "C2", "capacidad": 15}
-    ]
+    camiones, paquetes = cargar_casos("datos/caso_pequeno.txt")
 
-    paquetes = [
-        {"id": "P1", "peso": 10},
-        {"id": "P2", "peso": 5},
-        {"id": "P3", "peso": 8},
-        {"id": "P4", "peso": 12}
-    ]
-
-    asignacion_valida = {
-        "P1": "C2",
-        "P2": "C2",
-        "P3": "C1",
-        "P4": "C1"
-    }
-
-    asignacion_invalida = {
-        "P1": "C1",
-        "P2": "C1",
-        "P3": "C1",
-        "P4": "C1"
-    }
-
-    print("Asignación válida:", es_asignacion_valida(
-        asignacion_valida, camiones, paquetes
-    ))
-
-    print("Asignación inválida:", es_asignacion_valida(
-        asignacion_invalida, camiones, paquetes
-    ))
+    fuerza_bruta(paquetes, camiones)
