@@ -179,4 +179,4 @@
 > 
 > ![Gráfica de Tiempos de Ejecución](src/grafica_fuerza_bruta_logistica.png)
 > 
-> Como se observa en la gráfica, el tiempo transcurrido aumenta de forma vertiginosa a medida que crece n. Esto confirma empíricamente la complejidad teórica del algoritmo de Fuerza Bruta (O(m^n · n)), demostrando que el tiempo de procesamiento se vuelve inviable para instancias grandes de paquetes.
+> Como se observa en la gráfica, el tiempo transcurrido aumenta de forma vertiginosa a medida que crece n. Esto confirma empíricamente la complejidad teórica del algoritmo de Fuerza Bruta (O(m^n · n)), demostrando que el tiempo de procesamiento se vuelve inviable para instancias grandes de paquetess.
