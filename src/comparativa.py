@@ -1,56 +1,62 @@
-"""
-MÓDULO DE ANÁLISIS EMPÍRICO Y COMPARATIVA DE TIEMPOS
-===================================================
-Mide el tiempo real de ejecución de la Fuerza Bruta O(m^n) 
-y genera la gráfica en la carpeta `src/`.
-"""
-
-import json
+import os
+import sys
 import time
 import matplotlib.pyplot as plt
-from fuerza_bruta import resolver_fuerza_bruta  # Importación directa
+from fuerza_bruta import fuerza_bruta
 
-def crear_caso_sintetico(n_paquetes: int, m_camiones: int = 2) -> str:
-    """Crea un archivo JSON de prueba con n paquetes y m camiones."""
-    datos = {
-        "camiones": [{"id": f"C{i+1}", "capacidad": 30} for i in range(m_camiones)],
-        "paquetes": [{"id": f"P{i+1}", "peso": 5} for i in range(n_paquetes)]
-    }
-    ruta = "datos/caso_temp_comparativa.txt"
-    with open(ruta, "w", encoding="utf-8") as f:
-        json.dump(datos, f, indent=2)
-    return ruta
+def generar_caso_temporal(num_paquetes, num_camiones=2, capacidad_camion=30):
+    """Crea las listas de camiones y paquetes para n paquetes."""
+    camiones = [{"id": f"C{i+1}", "capacidad": capacidad_camion} for i in range(num_camiones)]
+    paquetes = [{"id": f"P{i+1}", "peso": (i % 5) + 3} for i in range(num_paquetes)]
+    return camiones, paquetes
 
-def ejecutar_analisis_empirico():
-    """Ejecuta las pruebas, mide tiempos reales y genera la gráfica."""
-    casos_n = [2, 4, 6, 8, 10, 12]
+def ejecutar_comparativa():
+    cantidades_paquetes = range(2, 13)  # n de 2 a 12
     tiempos = []
+    total_combinaciones = []
 
-    print("\n--- MEDIENDO TIEMPOS REALES (FUERZA BRUTA) ---")
-    for n in casos_n:
-        ruta = crear_caso_sintetico(n_paquetes=n)
+    print("Iniciando medición empírica de tiempos de ejecución...")
+
+    for n in cantidades_paquetes:
+        camiones, paquetes = generar_caso_temporal(n)
         
-        # Medición de tiempo exacto
+        # Ocultar los print de fuerza_bruta para que la consola no colapse con n=12
+        sys.stdout = open(os.devnull, 'w')
+
+        # Medición de tiempo
         inicio = time.perf_counter()
-        _, total_evaluadas = resolver_fuerza_bruta(ruta)
-        duracion = time.perf_counter() - inicio
+        fuerza_bruta(paquetes, camiones)  # Se ejecuta la función directamente sin asignación
+        fin = time.perf_counter()
+
+        # Restaurar la salida normal de la terminal
+        sys.stdout = sys.__stdout__
+
+        tiempo_ejecucion = fin - inicio
         
-        tiempos.append(duracion)
-        print(f"Paquetes (n): {n:2d} | Combinaciones: {total_evaluadas:6d} | Tiempo: {duracion:.6f}s")
+        # Calcular m^n directamente desde comparativa
+        total = len(camiones) ** len(paquetes)
+        
+        tiempos.append(tiempo_ejecucion)
+        total_combinaciones.append(total)
 
-    # Generación de gráfica
-    plt.figure(figsize=(7, 4.5))
-    plt.plot(casos_n, tiempos, 'o-', color='#1f77b4', linewidth=2, label='Fuerza Bruta $O(m^n)$')
-    plt.title('Tiempo de Ejecución vs. Cantidad de Paquetes', fontweight='bold')
-    plt.xlabel('Número de Paquetes ($n$)')
-    plt.ylabel('Tiempo (Segundos)')
-    plt.grid(True, linestyle='--', alpha=0.6)
-    plt.legend()
-    plt.tight_layout()
+        print(f"Paquetes (n={n}): Combinaciones={total} | Tiempo={tiempo_ejecucion:.6f}s")
+
+    # Generar y guardar la gráfica en la carpeta src/
+    plt.figure(figsize=(9, 5))
+    plt.plot(list(cantidades_paquetes), tiempos, marker='o', color='b', linestyle='-', linewidth=2, label='Fuerza Bruta O(m^n)')
     
-    # Guardar en src/
-    plt.savefig('src/grafica_fuerza_bruta_logistica.png', dpi=300)
-    print("\n Gráfica guardada en 'src/grafica_fuerza_bruta_logistica.png'\n")
+    plt.title('Análisis Empírico de Tiempos de Ejecución - Fuerza Bruta', fontsize=12, fontweight='bold')
+    plt.xlabel('Número de Paquetes (n)', fontsize=10)
+    plt.ylabel('Tiempo de Ejecución (segundos)', fontsize=10)
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.legend()
 
-if __name__ == '__main__':
-    ejecutar_analisis_empirico()
+    ruta_grafica = "src/grafica_fuerza_bruta_logistica.png"
+    os.makedirs("src", exist_ok=True)
+    plt.savefig(ruta_grafica, dpi=300, bbox_inches='tight')
+    plt.close()
+
+    print(f"\n✅ Análisis completado exitosamente. Gráfica guardada en '{ruta_grafica}'.")
+
+if __name__ == "__main__":
+    ejecutar_comparativa()
