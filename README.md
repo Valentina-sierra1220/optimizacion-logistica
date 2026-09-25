@@ -7,7 +7,7 @@
 
 ---
 
-##  Descripción del Proyecto
+## 📌 Descripción del Proyecto
 
 Este proyecto aborda la optimización integral del proceso de distribución de paquetes para un servicio de paquetería urbana. El objetivo principal es resolver simultáneamente:
 
@@ -17,9 +17,7 @@ Este proyecto aborda la optimización integral del proceso de distribución de p
 > **Objetivo de la Solución de Fuerza Bruta:**  
 > Generar exhaustivamente todas las posibles asignaciones de paquetes a camiones, evaluar las secuencias de entrega y verificar qué combinaciones respetan las capacidades máximas de carga y las ventanas de horario permitidas de cada cliente.
 
----
-
-##  Estructura del Repositorio
+## 📁 Estructura del Repositorio
 
 ```text
 optimizacion-logistica/
@@ -36,7 +34,8 @@ optimizacion-logistica/
 └── README.md                   # Documentación principal
 
 
----
+
+
 
 ## 1. Descripción del Conjunto de Datos y Casos de Prueba
 
@@ -52,7 +51,7 @@ Cada caso de prueba parametriza completamente las restricciones del problema de 
 
 ---
 
-###  Ejemplo de Estructura de Datos (`datos/caso_grande.txt`)
+### 📄 Ejemplo de Estructura de Datos (`datos/caso_grande.txt`)
 
 ```json
 {
@@ -102,9 +101,8 @@ Cada caso de prueba parametriza completamente las restricciones del problema de 
   ]
 }
 
----
 
-## 2.  Instrucciones de Ejecución
+## 2. 🚀 Instrucciones de Ejecución
 
 Para reproducir las pruebas de rendimiento, ejecutar la medición empírica de tiempos sobre los archivos de prueba reales (`caso_pequeno.txt`, `caso_mediano.txt` y `caso_grande.txt`) y regenerar automáticamente la gráfica de resultados, ejecuta el siguiente comando desde la raíz del proyecto:
 
@@ -112,20 +110,16 @@ Para reproducir las pruebas de rendimiento, ejecutar la medición empírica de t
 python3 src/comparativa.py
 
 
----
+## 3. 🧮 Análisis de Complejidad Teórica
 
-## 3. Análisis de Complejidad Teórica
-
-###  Complejidad Temporal: $\mathcal{O}(m^n \cdot m \cdot k! \cdot k)$
+### ⏱️ Complejidad Temporal: $\mathcal{O}(m^n \cdot m \cdot k! \cdot k \cdot n)$
 Para un total de $n$ paquetes y $m$ camiones, el algoritmo explora exhaustivamente $m^n$ combinaciones de asignación. Para cada camión que recibe $k$ paquetes ($\sum k = n$), el sistema evalúa hasta $k!$ permutaciones de ruteo para verificar el cumplimiento estricto de las ventanas de tiempo ($\text{ventana\_inicio}$ a $\text{ventana\_fin}$). Esto produce una explosión combinatoria que vuelve inviable el algoritmo para instancias grandes.
 
-###  Complejidad Espacial: $\mathcal{O}(m^n \cdot n + n!)$
+### 💾 Complejidad Espacial: $\mathcal{O}(m^n \cdot n + n!)$
 El consumo de memoria es directamente proporcional a la profundidad de la pila de llamadas recursivas ($\mathcal{O}(n)$) sumado al espacio requerido para almacenar el conjunto global de soluciones válidas en el peor escenario, donde cada solución retiene las asignaciones correspondientes.
 
 
----
-
-## 4.  Análisis Empírico de Tiempos de Ejecución
+## 4. 📊 Análisis Empírico de Tiempos de Ejecución
 
 Se realizó una medición experimental de los tiempos de ejecución evaluando el desempeño del algoritmo sobre las tres instancias de prueba del proyecto:
 
@@ -137,13 +131,13 @@ Se realizó una medición experimental de los tiempos de ejecución evaluando el
 
 ---
 
-###  Gráfica de Rendimiento
+### 📈 Gráfica de Rendimiento
 
 ![Gráfica de Tiempos de Ejecución](src/grafica_fuerza_bruta_logistica.png)
 
 ---
 
-###  Interpretación de Resultados
+### 📝 Interpretación de Resultados
 
 1. **Casos Pequeño y Mediano:** La ejecución se completa en fracciones de segundo ($\approx 0.0000\text{ s}$ y $\approx 0.0243\text{ s}$) debido al bajo número de permutaciones y asignaciones a evaluar ($16$ y $6,561$).
 2. **Caso Grande:** Al incrementar el espacio de búsqueda a $16,777,216$ asignaciones, el tiempo de procesamiento se dispara hasta los **$148.8030\text{ segundos}$ ($\approx 2.5\text{ minutos}$)**.
