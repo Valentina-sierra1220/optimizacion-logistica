@@ -165,11 +165,11 @@
 
 > ## 3. Análisis de Complejidad Teórica
 > 
-> * **Complejidad en Tiempo: Exponencial — O(m^n · n)**  
->   Si tenemos **n paquetes** y **m camiones**, el algoritmo prueba **m^n** combinaciones distintas para repartir los paquetes. Además, en cada intento revisa la lista completa de paquetes para validar el peso y el horario, sumando un costo adicional proporcional a **n**. Esto hace que el tiempo de ejecución explote y se vuelva extremadamente lento al aumentar los paquetes.
+> * **Complejidad en Tiempo: Exponencial — O(m^n · m · n)**  
+>   Si tenemos **n paquetes** y **m camiones**, el algoritmo explora un total de **m^n** combinaciones posibles. En cada llamado recursivo realiza una copia del estado actual de las asignaciones que toma un costo de **n**, y al llegar a cada combinación final (hoja) valida las capacidades de peso recorriendo los **m** camiones y sus **n** paquetes (costo de **m · n**). Esto da un tiempo total proporcional a **m^n · m · n**, haciendo que el tiempo de ejecución explote y se vuelva extremadamente lento al aumentar los paquetes.
 > 
-> * **Complejidad en Memoria (Espacio): O(n²)**  
->   A medida que el programa explora las opciones de manera recursiva, guarda en la memoria una copia de las asignaciones de cada nivel. Al llegar a una profundidad máxima de **n** niveles guardando información de hasta **n** paquetes, el consumo total de memoria crece de forma cuadrática.
+> * **Complejidad en Memoria (Espacio): O(m^n · n)**  
+>   Durante la ejecución recursiva, el programa alcanza una profundidad de **n** niveles en la pila con una memoria auxiliar de **n²**. Sin embargo, al considerar la estructura global de almacenamiento de resultados, en el peor escenario se guardan las **m^n** soluciones válidas, donde cada solución guarda un diccionario de **n** asignaciones. Esto hace que el consumo global de memoria crezca de forma proporcional a **m^n · n**.
 
 ---
 
@@ -179,4 +179,14 @@
 > 
 > ![Gráfica de Tiempos de Ejecución](src/grafica_fuerza_bruta_logistica.png)
 > 
-> Como se observa en la gráfica, el tiempo transcurrido aumenta de forma vertiginosa a medida que crece n. Esto confirma empíricamente la complejidad teórica del algoritmo de Fuerza Bruta (O(m^n · n)), demostrando que el tiempo de procesamiento se vuelve inviable para instancias grandes de paquetess.
+> Como se observa en la gráfica, el tiempo transcurrido aumenta de forma vertiginosa a medida que crece n. Esto confirma empíricamente la complejidad teórica del algoritmo de Fuerza Bruta (O(m^n · m · n)), demostrando que el tiempo de procesamiento se vuelve inviable para instancias grandes de paquetes.
+
+---
+
+> ## 4. Análisis Empírico de Tiempos de Ejecución
+> 
+> Se realizó una medición experimental continua de tiempos de ejecución evaluando el impacto al incrementar progresivamente la cantidad de paquetes desde n = 2 hasta n = 12.
+> 
+> ![Gráfica de Tiempos de Ejecución](src/grafica_fuerza_bruta_logistica.png)
+> 
+> Como se observa en la gráfica, el tiempo transcurrido aumenta a un ritmo exponencial a medida que crece n, manteniendo un consumo casi imperceptible en valores de n ≤ 8 y sufriendo una elevación acentuada a partir de n = 10 hasta alcanzar su punto máximo en n = 12. Esto confirma empíricamente la complejidad teórica del algoritmo de Fuerza Bruta (O(m^n · m · n)), demostrando la explosión combinatoria que vuelve inviable esta solución para instancias con un número elevado de paquetes.
