@@ -1,8 +1,43 @@
+# Optimización Logística - Asignación y Ruteo de Paquetes a Camiones
+
+**Asignatura:** Análisis y Diseño de Algoritmos  
+**Proyecto:** Sistema de Logística y Distribución de Paquetes  
+**Integrantes:** Valentina Sierra, María Jose Hincapie  
+**Fecha:** Septiembre 2026  
+
+---
+
+##  Descripción del Proyecto
+
+Este proyecto aborda la optimización integral del proceso de distribución de paquetes para un servicio de paquetería urbana. El objetivo principal es resolver simultáneamente:
+
+1. **Asignación de Carga:** Asignar $n$ paquetes a una flota de $m$ camiones asegurando no exceder la capacidad de carga útil de cada vehículo ($\sum \text{peso} \le \text{capacidad}$).
+2. **Ruteo de Entregas (TSP):** Encontrar el orden óptimo de entrega por camión ($k!$ permutaciones) para garantizar que el tiempo de llegada respete las ventanas de atención exigidas por cada cliente ($\text{ventana\_inicio}$ a $\text{ventana\_fin}$).
+
 # Caso de Estudio: Optimización Logística (Sistema de Logística y Entregas)
 
 > ## Objetivo de la Solución de Fuerza Bruta
 > 
 > Generar exhaustivamente todas las posibles asignaciones de paquetes a camiones, evaluar las secuencias de entrega y verificar qué combinaciones respetan las capacidades máximas de carga de los camiones, así como las ventanas de horario permitidas de cada cliente, devolviendo las soluciones válidas.
+
+---
+
+##  Estructura del Repositorio
+
+```text
+
+optimizacion-logistica/
+├── datos/                      # Archivos de entrada (.txt) reales
+│   ├── caso_pequeno.txt
+│   ├── caso_mediano.txt
+│   └── caso_grande.txt
+├── docs/                       # Informes técnicos y documentación del proyecto
+│   └── entrega1.md
+├── src/                        # Código fuente del proyecto
+│   ├── fuerza_bruta.py         # Algoritmo de Fuerza Bruta (Asignación + Ruteo)
+│   ├── comparativa.py          # Script de benchmarking y generación de métricas
+│   └── grafica_fuerza_bruta_logistica.png  # Gráfica de rendimiento generada
+└── README.md                   # Documentación principal
 
 ---
 
@@ -171,22 +206,17 @@
 > * **Complejidad en Memoria (Espacio): O(m^n · n)**  
 >   Durante la ejecución recursiva, el programa alcanza una profundidad de **n** niveles en la pila con una memoria auxiliar de **n²**. Sin embargo, al considerar la estructura global de almacenamiento de resultados, en el peor escenario se guardan las **m^n** soluciones válidas, donde cada solución guarda un diccionario de **n** asignaciones. Esto hace que el consumo global de memoria crezca de forma proporcional a **m^n · n**.
 
----
-
-> ## 4. Análisis Empírico de Tiempos de Ejecución
-> 
-> Se realizó una medición experimental de tiempos de ejecución variando la cantidad de paquetes (n) desde n = 2 hasta n = 12.
-> 
-> ![Gráfica de Tiempos de Ejecución](src/grafica_fuerza_bruta_logistica.png)
-> 
-> Como se observa en la gráfica, el tiempo transcurrido aumenta de forma vertiginosa a medida que crece n. Esto confirma empíricamente la complejidad teórica del algoritmo de Fuerza Bruta (O(m^n · m · n)), demostrando que el tiempo de procesamiento se vuelve inviable para instancias grandes de paquetes.
 
 ---
 
-> ## 4. Análisis Empírico de Tiempos de Ejecución
-> 
-> Se realizó una medición experimental continua de tiempos de ejecución evaluando el impacto al incrementar progresivamente la cantidad de paquetes desde n = 2 hasta n = 12.
-> 
-> ![Gráfica de Tiempos de Ejecución](src/grafica_fuerza_bruta_logistica.png)
-> 
-> Como se observa en la gráfica, el tiempo transcurrido aumenta a un ritmo exponencial a medida que crece n, manteniendo un consumo casi imperceptible en valores de n ≤ 8 y sufriendo una elevación acentuada a partir de n = 10 hasta alcanzar su punto máximo en n = 12. Esto confirma empíricamente la complejidad teórica del algoritmo de Fuerza Bruta (O(m^n · m · n)), demostrando la explosión combinatoria que vuelve inviable esta solución para instancias con un número elevado de paquetes.
+## 4. Análisis Empírico de Tiempos de Ejecución
+
+Se realizó una medición experimental de los tiempos de ejecución evaluando el desempeño del algoritmo sobre las tres instancias de prueba del proyecto (`caso_pequeno.txt`, `caso_mediano.txt` y `caso_grande.txt`).
+
+![Gráfica de Tiempos de Ejecución](src/grafica_fuerza_bruta_logistica.png)
+
+Como se observa en los resultados y en la gráfica, el tiempo transcurrido aumenta a un ritmo exponencial a medida que crece el número de asignaciones evaluadas:
+- En los casos **Pequeño** ($16$ asignaciones) y **Mediano** ($6,561$ asignaciones), la ejecución toma fracciones de segundo ($\approx 0.000\text{ s}$ y $\approx 0.0243\text{ s}$).
+- En el **Caso Grande** ($16,777,216$ asignaciones), el tiempo se dispara hasta alcanzar $\approx 148.803\text{ s}$ ($\approx 2.5\text{ min}$).
+
+Esto confirma empíricamente la complejidad teórica del algoritmo de Fuerza Bruta ($\mathcal{O}(m^n \cdot m \cdot k! \cdot k)$), demostrando la explosión combinatoria que vuelve inviable esta solución para instancias con un número elevado de paquetes.
