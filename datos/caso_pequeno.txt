@@ -34,7 +34,7 @@
       "id": "P3",
       "peso": 8,
       "destino": "D3",
-      "ventana_inicio": 11,
+      "ventana_inicio": 10,
       "ventana_fin": 15,
       "tiempo_viaje": 2,
       "tiempo_entrega": 1
@@ -43,7 +43,7 @@
       "id": "P4",
       "peso": 12,
       "destino": "D4",
-      "ventana_inicio": 12,
+      "ventana_inicio": 10,
       "ventana_fin": 16,
       "tiempo_viaje": 2,
       "tiempo_entrega": 1

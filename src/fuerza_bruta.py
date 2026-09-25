@@ -22,17 +22,21 @@ def validar_orden_entrega(orden, paquetes, camion):
 
         tiempo_llegada = tiempo_actual + datos_paquete["tiempo_viaje"]
 
-        if tiempo_llegada < datos_paquete["ventana_inicio"] or tiempo_llegada > datos_paquete["ventana_fin"]:
+        if tiempo_llegada < datos_paquete["ventana_inicio"]:
+            tiempo_llegada = datos_paquete["ventana_inicio"]
+
+        if tiempo_llegada > datos_paquete["ventana_fin"]:
             return False
 
         tiempo_actual = tiempo_llegada + datos_paquete["tiempo_entrega"]
     return True
 
 def generar_ordenes(paquetes, camion):
+    ordenes_validas = []
     def generar(actual, restantes):
         if not restantes:
             if validar_orden_entrega(actual, paquetes, camion):
-                print("ORDEN valido: ", actual)
+                ordenes_validas.append(actual)
             return
 
         for paquete in restantes:
@@ -41,6 +45,7 @@ def generar_ordenes(paquetes, camion):
             generar(nuevo_actual, nuevos_restantes)
 
     generar([], paquetes)
+    return ordenes_validas
 
  
 def fuerza_bruta(paquetes,camiones):
@@ -53,7 +58,22 @@ def fuerza_bruta(paquetes,camiones):
         if indice == len(paquetes):  #O(1)
             total_evaluadas += 1 #O(1)
             if es_asignacion_valida(asignacion,camiones,paquetes):  #(m*n)
-                soluciones.append(asignacion) #O(1)*
+                asignacion_valida = True
+                for camion in camiones:
+                    paquetes_camion = []
+
+                    for paquete in paquetes:
+                        if asignacion[paquete["id"]] == camion["id"]:
+                            paquetes_camion.append(paquete)
+                    ordenes = generar_ordenes(paquetes_camion, camion)
+                    
+                    if not ordenes:
+                        asignacion_valida = False
+                        break
+
+                if asignacion_valida:
+                    soluciones.append(asignacion) #O(1)*
+
             return #O(1)
 
         paquete = paquetes[indice] #O(1)
@@ -82,9 +102,12 @@ def cargar_casos(ruta):
 
 
 if __name__ == "__main__":
-    camiones, paquetes = cargar_casos("datos/caso_pequeno.txt")
+    print("Prueba de fuerza bruta")
 
-    paquetes_prueba = [paquetes[0], paquetes[1], paquetes[2]]
+    camiones, paquetes = cargar_casos("datos/caso_grande.txt")
 
-    print("Órdenes válidas:")
-    generar_ordenes(paquetes_prueba, camiones[0])
+    soluciones, total = fuerza_bruta(paquetes, camiones)
+
+    print("Asignaciones evaluadas:", total)
+    print("Soluciones encontradas:", len(soluciones))
+    

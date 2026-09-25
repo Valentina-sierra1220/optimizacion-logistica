@@ -7,12 +7,12 @@
     },
     {
       "id": "C2",
-      "capacidad": 25,
+      "capacidad": 30,
       "hora_inicio": 8
     },
     {
       "id": "C3",
-      "capacidad": 20,
+      "capacidad": 30,
       "hora_inicio": 8
     },
     {
@@ -27,7 +27,7 @@
       "peso": 7,
       "destino": "D1",
       "ventana_inicio": 9,
-      "ventana_fin": 11,
+      "ventana_fin": 20,
       "tiempo_viaje": 1,
       "tiempo_entrega": 1
     },
@@ -36,7 +36,7 @@
       "peso": 12,
       "destino": "D2",
       "ventana_inicio": 10,
-      "ventana_fin": 12,
+      "ventana_fin": 20,
       "tiempo_viaje": 1,
       "tiempo_entrega": 1
     },
@@ -45,7 +45,7 @@
       "peso": 5,
       "destino": "D3",
       "ventana_inicio": 11,
-      "ventana_fin": 13,
+      "ventana_fin": 21,
       "tiempo_viaje": 2,
       "tiempo_entrega": 1
     },
@@ -54,7 +54,7 @@
       "peso": 9,
       "destino": "D4",
       "ventana_inicio": 12,
-      "ventana_fin": 14,
+      "ventana_fin": 22,
       "tiempo_viaje": 2,
       "tiempo_entrega": 1
     },
@@ -63,7 +63,7 @@
       "peso": 15,
       "destino": "D1",
       "ventana_inicio": 9,
-      "ventana_fin": 11,
+      "ventana_fin": 20,
       "tiempo_viaje": 1,
       "tiempo_entrega": 1
     },
@@ -72,7 +72,7 @@
       "peso": 3,
       "destino": "D2",
       "ventana_inicio": 10,
-      "ventana_fin": 12,
+      "ventana_fin": 20,
       "tiempo_viaje": 1,
       "tiempo_entrega": 1
     },
@@ -81,7 +81,7 @@
       "peso": 8,
       "destino": "D3",
       "ventana_inicio": 11,
-      "ventana_fin": 13,
+      "ventana_fin": 21,
       "tiempo_viaje": 2,
       "tiempo_entrega": 1
     },
@@ -90,7 +90,7 @@
       "peso": 10,
       "destino": "D4",
       "ventana_inicio": 12,
-      "ventana_fin": 14,
+      "ventana_fin": 22,
       "tiempo_viaje": 2,
       "tiempo_entrega": 1
     },
@@ -99,7 +99,7 @@
       "peso": 6,
       "destino": "D1",
       "ventana_inicio": 9,
-      "ventana_fin": 11,
+      "ventana_fin": 20,
       "tiempo_viaje": 1,
       "tiempo_entrega": 1
     },
@@ -108,7 +108,7 @@
       "peso": 11,
       "destino": "D2",
       "ventana_inicio": 10,
-      "ventana_fin": 12,
+      "ventana_fin": 20,
       "tiempo_viaje": 1,
       "tiempo_entrega": 1
     },
@@ -117,7 +117,7 @@
       "peso": 4,
       "destino": "D3",
       "ventana_inicio": 11,
-      "ventana_fin": 13,
+      "ventana_fin": 21,
       "tiempo_viaje": 2,
       "tiempo_entrega": 1
     },
@@ -126,7 +126,7 @@
       "peso": 14,
       "destino": "D4",
       "ventana_inicio": 12,
-      "ventana_fin": 14,
+      "ventana_fin": 22,
       "tiempo_viaje": 2,
       "tiempo_entrega": 1
     }
