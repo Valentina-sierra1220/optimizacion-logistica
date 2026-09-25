@@ -107,22 +107,21 @@ def fuerza_bruta(paquetes, camiones):
 ## 3. Análisis Teórico de Complejidad
 
 ### 3.1 Complejidad Temporal: $\mathcal{O}(m^n \cdot m \cdot k! \cdot k)$
-**Justificación:** Dado un conjunto de $n$ paquetes, $m$ camiones y un promedio de $k \approx n/m$ paquetes asignados por camión:
-* **Árbol de Asignación:** Se generan $m^n$ hojas en el árbol recursivo de asignaciones.
-* **Validación de Capacidad:** Revisar los pesos consume un tiempo lineal $\mathcal{O}(m \cdot n)$.
-* **Validación de Ruteo y Ventanas de Tiempo:** Para cada camión con $k$ paquetes, se generan hasta $k!$ permutaciones, evaluando $k$ paradas por permutación. Esto añade un costo factorial de $\mathcal{O}(m \cdot k! \cdot k)$ en cada hoja.
 
-El costo temporal total dominante es **$\mathcal{O}(m^n \cdot m \cdot k! \cdot k)$**, combinando un crecimiento exponencial en la asignación con un crecimiento factorial en el ruteo.
+**Justificación:** Dado un conjunto de $n$ paquetes, $m$ camiones y un promedio de $k \approx n/m$ paquetes asignados por camión:
+* **Árbol de Asignación:** Se exploran exhaustivamente $m^n$ combinaciones posibles en las hojas del árbol recursivo.
+* **Validación de Capacidad:** Verificar las restricciones de peso en todos los camiones requiere tiempo lineal $\mathcal{O}(n)$.
+* **Validación de Ruteo y Ventanas de Tiempo:** Para cada camión con $k$ paquetes, se evalúan $k!$ permutaciones de entrega con $k$ paradas cada una, generando un costo de $\mathcal{O}(m \cdot k! \cdot k)$ por hoja evaluada.
+
+El costo temporal dominante es **$\mathcal{O}(m^n \cdot m \cdot k! \cdot k)$**, combinando un crecimiento exponencial en la asignación con un crecimiento factorial en el ruteo.
 
 ---
 
-### 3.2 Complejidad Espacial: $\mathcal{O}(m^n \cdot n + n!)$
+### 3.2 Complejidad Espacial: $\mathcal{O}(m^n \cdot n)$
+
 **Justificación:**
-* **Pila Recursiva y Permutaciones:** La pila de llamadas alcanza una profundidad de $n$, y la generación de permutaciones en memoria auxiliar toma un espacio proporcional a $\mathcal{O}(k! \cdot k)$ o $\mathcal{O}(n!)$.
-* **Almacenamiento de Soluciones:** Guardar las soluciones válidas requiere espacio para almacenar las combinaciones retenidas de tamaño $n$.
-
-La complejidad espacial total de almacenamiento y ejecución es de **$\mathcal{O}(m^n \cdot n + n!)$**.
-
+* **Pila Recursiva y Generación de Permutaciones:** La profundidad máxima de la llamada recursiva para asignar paquetes y permutar las rutas de entrega en memoria auxiliar ocupa un espacio proporcional a $\mathcal{O}(n)$.
+* **Almacenamiento de Soluciones Válidas:** En el peor escenario, donde se almacenan en memoria todas las soluciones válidas generadas para su posterior análisis, el espacio requerido es proporcional al número de soluciones retenidas multiplicado por el tamaño de la asignación de paquetes, es decir, $\mathcal{O}(m^n \cdot n)$.
 
 ## 4. Análisis Empírico y Resultados
 
