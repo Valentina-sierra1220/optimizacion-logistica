@@ -1,51 +1,133 @@
 # Informe Técnico: Entrega 1 - Algoritmo de Fuerza Bruta
 **Asignatura:** Análisis y Diseño de Algoritmos  
 **Proyecto:** Optimización Logística - Asignación de Paquetes a Camiones  
-**Integrantes:** Valentina Sierra, María jose hincapie 
+**Integrantes:** Valentina Sierra, María Jose Hincapie  
 **Fecha:** Septiembre 2026  
 
 ---
 
-## 1. Introducción y Descripción del Problema
+## 1. Definición del Problema y Caso de Uso
 
-El problema de optimización logística consiste en asignar un conjunto de $n$ paquetes a una flota de $m$ camiones, garantizando que el peso total asignado a cada vehículo no exceda su capacidad máxima permitida. 
+### 1.1 Descripción del Caso de Uso
+El proyecto aborda la optimización de un **Sistema de Logística y Entregas** para un servicio de paquetería. El objetivo principal es gestionar la distribución eficiente de $n$ paquetes transportados por una flota de $m$ camiones de capacidad limitada.
 
-El objetivo general de esta primera entrega es implementar una solución exacta mediante el enfoque de **Fuerza Bruta**, validar su correcto funcionamiento y evaluar experimentalmente sus límites de escalabilidad espacio-temporal.
+El problema general del sistema abarca tres subproblemas interrelacionados:
+1. **Asignación de paquetes a camiones:** Determinar qué camión transporta cada paquete sin superar el límite de carga útil del vehículo.
+2. **Orden óptimo de entrega (Ruteo / TSP):** Encontrar la secuencia más eficiente de paradas para minimizar los tiempos de traslado.
+3. **Restricciones de horario y capacidad:** Asegurar que los tiempos de traslado y servicio respeten las ventanas de tiempo exigidas por cada cliente.
 
----
+### 1.2 Entradas, Salidas y Restricciones
+* **Entradas:**
+  * **Flota de camiones:** Identificador (`id`), capacidad máxima de carga (`capacidad`) y hora de salida (`hora_inicio`).
+  * **Lista de paquetes:** Identificador (`id`), peso (`peso`), lugar de entrega (`destino`), ventana de atención (`ventana_inicio`, `ventana_fin`), tiempo de traslado (`tiempo_viaje`) y tiempo de atención (`tiempo_entrega`).
+* **Salidas:** Lista de asignaciones de paquetes por camión y la secuencia óptima de entrega para cada uno.
+* **Restricciones:**
+  * **Capacidad:** La suma de los pesos de los paquetes asignados a un camión no puede superar su capacidad máxima ($\sum \text{peso} \le \text{capacidad}$).
+  * **Ventana de horario:** El tiempo de llegada a cada destino debe ser menor o igual al límite de su ventana de atención ($\text{tiempo\_llegada} \le \text{ventana\_fin}$).
 
-## 2. Formulación y Algoritmo de Fuerza Bruta
+### 1.3 Estructura del Conjunto de Datos de Prueba
+Los casos de prueba se estructuran en archivos formato JSON/TXT ubicados en la carpeta `datos/` (`caso_pequeno`, `caso_mediano` y `caso_grande`).
 
-### 2.1 Modelo y Restricciones
-* **Entradas:** 
-  * Flota de camiones $C = \{c_1, c_2, \dots, c_m\}$, donde cada camión $c_i$ tiene una capacidad máxima $W_i$.
-  * Conjunto de paquetes $P = \{p_1, p_2, \dots, p_n\}$, donde cada paquete $p_j$ posee un peso $w_j$.
-* **Restricción de Capacidad:**  
-  Para todo camión $c_i$, la suma de los pesos de los paquetes asignados a él debe ser menor o igual a su capacidad:
-  $$\sum_{p_j \in \text{camión } c_i} w_j \le W_i$$
-* **Salida:** Conjunto de todas las asignaciones válidas que cumplen la restricción de capacidad.
-
-### 2.2 Análisis de Complejidad Teórica
-El algoritmo explora el espacio de búsqueda completo generando todas las posibles combinaciones de asignación de paquetes a camiones. Dado que cada uno de los $n$ paquetes puede asignarse a cualquiera de los $m$ camiones:
-
-* **Complejidad Temporal:** $\mathcal{O}(m^n)$ — Crecimiento exponencial respectivo a la cantidad de paquetes.
-* **Complejidad Espacial:** $\mathcal{O}(n)$ para almacenar una asignación individual o $\mathcal{O}(m^n)$ para almacenar todas las combinaciones válidas en memoria[cite: 1].
-
----
-
-## 3. Estructura de Datos y Casos de Prueba
-
-Las instancias del problema se definieron utilizando archivos en formato JSON estructurado dentro del directorio `datos/` (`caso_pequeno.txt`, `caso_mediano.txt`, `caso_grande.txt`)[cite: 1].
+**Ejemplo de la estructura de datos (`datos/caso_grande.json`):**
 
 ```json
 {
   "camiones": [
-    {"id": "C1", "capacidad": 30},
-    {"id": "C2", "capacidad": 30}
+    {
+      "id": "C1",
+      "capacidad": 30,
+      "hora_inicio": 8
+    },
+    {
+      "id": "C2",
+      "capacidad": 25,
+      "hora_inicio": 8
+    }
   ],
   "paquetes": [
-    {"id": "P1", "peso": 5},
-    {"id": "P2", "peso": 8},
-    {"id": "P3", "peso": 12}
+    {
+      "id": "P1",
+      "peso": 7,
+      "destino": "D1",
+      "ventana_inicio": 9,
+      "ventana_fin": 11,
+      "tiempo_viaje": 1,
+      "tiempo_entrega": 1
+    },
+    {
+      "id": "P2",
+      "peso": 12,
+      "destino": "D2",
+      "ventana_inicio": 10,
+      "ventana_fin": 12,
+      "tiempo_viaje": 1,
+      "tiempo_entrega": 1
+    }
   ]
 }
+
+
+## 2. Solución por Fuerza Bruta
+
+### 2.1 Descripción de la Solución
+La solución por Fuerza Bruta evalúa exhaustivamente el espacio de soluciones mediante exploración recursiva. El algoritmo prueba de forma sistemática todas las permutaciones posibles de asignación de paquetes en los camiones disponibles, generando un árbol de decisión completo para validar cuáles combinaciones cumplen con los límites de capacidad e incompatibilidad.
+
+### 2.2 Código Fuente de Referencia (`src/fuerza_bruta.py`)
+
+```python
+def fuerza_bruta(paquetes, camiones):
+    """
+    Algoritmo de Fuerza Bruta que genera exhaustivamente todas las asignaciones
+    posibles de paquetes a camiones mediante un árbol de decisión recursivo.
+    """
+    def generar_asignaciones(indice, asignacion):
+        # Caso base: se han procesado todos los paquetes
+        if indice == len(paquetes):
+            print("Asignación completa:", asignacion)
+            return
+
+        paquete = paquetes[indice]
+        # Exploración de opciones de camiones para el paquete actual
+        for camion in camiones:
+            nueva_asignacion = asignacion.copy()
+            nueva_asignacion[paquete["id"]] = camion["id"]
+            generar_asignaciones(indice + 1, nueva_asignacion)
+
+    generar_asignaciones(0, {})
+
+
+
+## 3. Análisis Teórico de Complejidad
+
+### 3.1 Complejidad Temporal: $\mathcal{O}(m^n \cdot n)$
+* **Justificación:** Dado un conjunto de $n$ paquetes y $m$ camiones, cada paquete tiene $m$ elecciones independientes de asignación. El árbol recursivo genera un total de $m \times m \times \dots \times m = m^n$ hojas (combinaciones finales). En cada nodo recursivo se ejecuta una copia del diccionario de asignaciones mediante `asignacion.copy()`, operando en un tiempo proporcional a la cantidad de paquetes procesados $\mathcal{O}(n)$. Por ende, la complejidad temporal total es puramente exponencial: $\mathcal{O}(m^n \cdot n)$.
+
+### 3.2 Complejidad Espacial: $\mathcal{O}(n^2)$
+* **Justificación:** La profundidad máxima de la pila de llamadas recursivas es $n$ (un nivel por cada paquete a asignar). En cada marco de ejecución de la pila se mantiene un diccionario local `nueva_asignacion`. Al sumar la memoria consumida por las estructuras auxiliares en cada nivel de la pila de llamadas ($1 + 2 + \dots + n$), el espacio en memoria auxiliar escala como $\frac{n(n+1)}{2}$, lo que equivale a una complejidad espacial de $\mathcal{O}(n^2)$.
+
+---
+
+## 4. Análisis Empírico de Tiempos de Ejecución
+
+### 4.1 Ejecución y Mediciones
+Se realizó la evaluación experimental del algoritmo incrementando progresivamente la cantidad de paquetes ($n$) desde $n=2$ hasta $n=12$.
+
+Las pruebas se ejecutan con el siguiente script de comparación:
+```bash
+python3 src/comparativa.py
+
+
+
+### 4.2 Gráfica de Rendimiento
+![Gráfica de Tiempos de Ejecución](src/grafica_fuerza_bruta_logistica.png)
+
+### 4.3 Interpretación de Resultados
+La curva empírica ratifica de forma directa la complejidad teórica exponenciada $\mathcal{O}(m^n \cdot n)$. Para valores pequeños ($n \le 8$), el tiempo de respuesta es casi instantáneo; sin embargo, al aproximarse a $n = 12$, la curva sufre un crecimiento vertiginoso. Esto demuestra la inviabilidad computacional de la Fuerza Bruta para problemas de logística en escenarios reales con decenas o cientos de paquetes.
+
+---
+
+## 5. Conclusiones
+
+1. Se logró modelar e implementar de manera funcional el algoritmo de Fuerza Bruta para resolver la asignación inicial en el Sistema de Logística y Entregas.
+2. La validación teórica y la medición empírica coinciden en que la estrategia por Fuerza Bruta presenta una complejidad exponencial $\mathcal{O}(m^n \cdot n)$, no escalable para grandes conjuntos de datos.
+3. Para las entregas posteriores se requerirá implementar técnicas avanzadas de optimización y reducción del espacio de búsqueda (como poda con Backtracking, Algoritmos Voraces/Greedy o Programación Dinámica) para resolver eficazmente la secuencia óptima de ruteo y las ventanas de horario
