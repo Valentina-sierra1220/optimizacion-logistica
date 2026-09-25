@@ -142,3 +142,20 @@ Se realizó una medición experimental de los tiempos de ejecución evaluando el
 1. **Casos Pequeño y Mediano:** La ejecución se completa en fracciones de segundo ($\approx 0.0000\text{ s}$ y $\approx 0.0243\text{ s}$) debido al bajo número de permutaciones y asignaciones a evaluar ($16$ y $6,561$).
 2. **Caso Grande:** Al incrementar el espacio de búsqueda a $16,777,216$ asignaciones, el tiempo de procesamiento se dispara hasta los **$148.8030\text{ segundos}$ ($\approx 2.5\text{ minutos}$)**.
 3. **Conclusión:** El experimento evidencia la explosión combinatoria propia de la Fuerza Bruta, demostrando la necesidad imperativa de implementar estrategias de optimización como poda por *Backtracking*, algoritmos voraces (*Greedy*) o metaheurísticas para las próximas entregas.
+
+
+
+1. 📄 Descripción del Conjunto de Datos y Casos de Prueba
+Para la validación y evaluación experimental del algoritmo, se estructuraron tres casos de prueba en formato JSON/TXT ubicados en el directorio datos/:
+
+datos/caso_pequeno.txt
+
+datos/caso_mediano.txt
+
+datos/caso_grande.txt
+
+Cada caso de prueba parametriza completamente las restricciones del problema de logística:
+
+Flota de Camiones: Capacidad máxima de carga útil (peso) y hora de salida desde el depósito.
+
+Paquetes: Peso individual, nodo de destino, tiempo de viaje desde el depósito, tiempo de atención/descarga y ventanas de tiempo requeridas (ventana_inicio a ventana_fin).
