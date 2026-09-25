@@ -12,7 +12,7 @@
 Este proyecto aborda la optimización integral del proceso de distribución de paquetes para un servicio de paquetería urbana. El objetivo principal es resolver simultáneamente:
 
 1. **Asignación de Carga:** Asignar $n$ paquetes a una flota de $m$ camiones asegurando no exceder la capacidad de carga útil de cada vehículo ($\sum \text{peso} \le \text{capacidad}$).
-2. **Ruteo de Entregas (TSP):** Encontrar el orden óptimo de entrega por camión ($k!$ permutaciones) para garantizar que el tiempo de llegada respete las ventanas de atención exigidas por cada cliente ($\text{ventana\_inicio}$ a $\text{ventana\_fin}$).
+2. **Ruteo de Entregas (TSP):** Encontrar el orden óptimo de entrega por camión ($k!$ permutaciones) para garantizar que el tiempo de llegada respete las ventanas de atención exigidas por cada cliente (`ventana_inicio` a `ventana_fin`).
 
 > **Objetivo de la Solución de Fuerza Bruta:**  
 > Generar exhaustivamente todas las posibles asignaciones de paquetes a camiones, evaluar las secuencias de entrega y verificar qué combinaciones respetan las capacidades máximas de carga y las ventanas de horario permitidas de cada cliente.
