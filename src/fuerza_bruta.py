@@ -1,4 +1,5 @@
 import json
+import time
 
 def es_asignacion_valida(asignacion, camiones, paquetes):
     for camion in camiones:
@@ -104,10 +105,11 @@ def cargar_casos(ruta):
 if __name__ == "__main__":
     print("Prueba de fuerza bruta")
 
-    camiones, paquetes = cargar_casos("datos/caso_grande.txt")
-
+    camiones, paquetes = cargar_casos("datos/caso_pequeno.txt")
+    inicio = time.time()
     soluciones, total = fuerza_bruta(paquetes, camiones)
-
+    fin = time.time()
     print("Asignaciones evaluadas:", total)
     print("Soluciones encontradas:", len(soluciones))
+    print("Tiempo de ejecución:", fin - inicio, "segundos")
     
