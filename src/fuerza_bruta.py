@@ -33,15 +33,38 @@ def fuerza_bruta(paquetes,camiones):
     generar_asignaciones(0,{}) #0(1) inicial
     return soluciones, total_evaluadas #0(1)
 
-def validar_orden_entrega(orden, paquetes):
-    tiempo_actual = 8 #O(1)
+def validar_orden_entrega(orden, paquetes, camion):
+    tiempo_actual = camion["hora_inicio"] #O(1)
     for paquete in orden: #O(n)
         for p in paquetes: #O(n)
-            if p["id"] == paquete:
+            if p["id"] == paquete["id"]:
                 datos_paquete = p
                 break
 
-        tiempo_llegada = tiempo_actual + 1
+        tiempo_llegada = tiempo_actual + datos_paquete["tiempo_viaje"]
+
+        if tiempo_llegada < datos_paquete["ventana_inicio"] or tiempo_llegada > datos_paquete["ventana_fin"]:
+            return False
+
+        tiempo_actual = tiempo_llegada + datos_paquete["tiempo_entrega"]
+    return True
+
+def generar_ordenes(paquetes, camion):
+    def generar(actual, restantes):
+        if not restantes:
+            if validar_orden_entrega(actual, paquetes, camion):
+                print("ORDEN valido: ", actual)
+            return
+
+        for paquete in restantes:
+            nuevo_actual = actual + [paquete]
+            nuevos_restantes = [p for p in restantes if p != paquete]
+            generar(nuevo_actual, nuevos_restantes)
+
+    generar([], paquetes)
+
+
+
 
 
 
@@ -56,7 +79,10 @@ def cargar_casos(ruta):
 
 
 if __name__ == "__main__":
+    print("Prueba de fuerza bruta")
     camiones, paquetes = cargar_casos("datos/caso_pequeno.txt")
+    fuerza_bruta(paquetes, camiones)
 
-    soluciones, total_evaluadas =fuerza_bruta(paquetes, camiones)
-    print("soluciones encontradas", soluciones, total_evaluadas)
+
+    print("\nÓrdenes posibles:")
+    generar_ordenes(paquetes, camiones[0])
