@@ -2,22 +2,22 @@ import os
 import sys
 import time
 import matplotlib.pyplot as plt
-from fuerza_bruta import fuerza_bruta
+from fuerza_bruta import fuerza_bruta, cargar_casos
 
-def generar_caso_temporal(num_paquetes, num_camiones=2, capacidad_camion=30):
-    """Crea las listas de camiones y paquetes para n paquetes."""
-    camiones = [{"id": f"C{i+1}", "capacidad": capacidad_camion} for i in range(num_camiones)]
-    paquetes = [{"id": f"P{i+1}", "peso": (i % 5) + 3} for i in range(num_paquetes)]
-    return camiones, paquetes
 
 def ejecutar_comparativa():
-    cantidades_paquetes = range(2, 13)  # n de 2 a 12
+    casos = [
+        ("pequeño", "datos/caso_pequeno.txt"),
+        ("mediano", "datos/caso_mediano.txt"),
+        ("grande", "datos/caso_grande.txt")
+    ]
+    cantidades_paquetes = []  
     tiempos = []
 
     print("Iniciando medición empírica de tiempos de ejecución...")
 
-    for n in cantidades_paquetes:
-        camiones, paquetes = generar_caso_temporal(n)
+    for nombre, ruta in casos:
+        camiones, paquetes = cargar_casos(ruta)
         
         # Ocultar los print de fuerza_bruta para que la consola no colapse con n=12
         sys.stdout = open(os.devnull, 'w')
@@ -32,10 +32,11 @@ def ejecutar_comparativa():
 
         tiempo_ejecucion = fin - inicio
         
-        
+        cantidades_paquetes.append(len(paquetes))
         tiempos.append(tiempo_ejecucion)
 
-        print(f"Paquetes (n={n}): Combinaciones={total} | Tiempo={tiempo_ejecucion:.6f}s")
+        print( f"{nombre}: " f"Paquetes={len(paquetes)} | " f"Combinaciones={total} | " f"Tiempo={tiempo_ejecucion:.6f}s" )
+        
 
     # Generar y guardar la gráfica en la carpeta src/
     plt.figure(figsize=(9, 5))
