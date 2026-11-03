@@ -1,38 +1,41 @@
+
 {
   "camiones": [
     {
       "id": "C1",
-      "capacidad": 20,
-      "hora_inicio": 8
+      "capacidad": 25,
+      "hora_inicio": 6,
+      "hora_fin": 22
     },
     {
       "id": "C2",
-      "capacidad": 15,
-      "hora_inicio": 8
+      "capacidad": 25,
+      "hora_inicio": 7,
+      "hora_fin": 23
     }
   ],
   "paquetes": [
     {
       "id": "P1",
-      "peso": 10,
+      "peso": 8,
       "destino": "D1",
-      "ventana_inicio": 9,
+      "ventana_inicio": 8,
       "ventana_fin": 12,
       "tiempo_viaje": 1,
       "tiempo_entrega": 1
     },
     {
       "id": "P2",
-      "peso": 5,
+      "peso": 7,
       "destino": "D2",
-      "ventana_inicio": 10,
-      "ventana_fin": 14,
+      "ventana_inicio": 9,
+      "ventana_fin": 13,
       "tiempo_viaje": 1,
       "tiempo_entrega": 1
     },
     {
       "id": "P3",
-      "peso": 8,
+      "peso": 9,
       "destino": "D3",
       "ventana_inicio": 10,
       "ventana_fin": 15,
@@ -41,11 +44,29 @@
     },
     {
       "id": "P4",
-      "peso": 12,
+      "peso": 6,
       "destino": "D4",
-      "ventana_inicio": 10,
-      "ventana_fin": 16,
+      "ventana_inicio": 12,
+      "ventana_fin": 17,
       "tiempo_viaje": 2,
+      "tiempo_entrega": 1
+    },
+    {
+      "id": "P5",
+      "peso": 5,
+      "destino": "D5",
+      "ventana_inicio": 14,
+      "ventana_fin": 18,
+      "tiempo_viaje": 1,
+      "tiempo_entrega": 1
+    },
+    {
+      "id": "P6",
+      "peso": 8,
+      "destino": "D6",
+      "ventana_inicio": 16,
+      "ventana_fin": 20,
+      "tiempo_viaje": 1,
       "tiempo_entrega": 1
     }
   ]
