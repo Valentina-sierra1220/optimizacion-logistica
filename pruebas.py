@@ -4,7 +4,7 @@ from src.backtracking import backtracking, buscar_mejor_ruta
 import time
 
 # Cargar caso de prueba
-ruta_archivo = Path("datos/caso_pequeno.txt")
+ruta_archivo = Path("datos/caso_grande.txt")
 
 with open(ruta_archivo, "r", encoding="utf-8") as archivo:
     datos = json.load(archivo)

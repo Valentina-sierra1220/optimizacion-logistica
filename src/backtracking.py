@@ -38,12 +38,24 @@ def backtracking(paquetes, camiones):
 
             return
 
+
         paquete = paquetes[indice]
         peso = paquete["peso"]
 
 
         #probar camiones
         for camion in range(len(camiones)):
+            # Poda por simetría
+            
+            equivalentes = [
+                i for i in range(camion)
+                if camiones[i]["capacidad"] == camiones[camion]["capacidad"]
+                and camiones[i]["hora_inicio"] == camiones[camion]["hora_inicio"]
+                and cargas[i] == cargas[camion]
+            ]
+
+            if equivalentes:
+                continue
             capacidad = camiones[camion]["capacidad"]
             nueva_carga = cargas[camion] + peso
 
@@ -84,6 +96,15 @@ def buscar_mejor_ruta(paquetes, camion):
             if hora_actual < mejor_hora_finalizacion:
                 mejor_hora_finalizacion = hora_actual
                 mejor_ruta = ruta_actual.copy()
+            return
+
+        tiempo_restante = sum(
+            p["tiempo_viaje"] + p["tiempo_entrega"]
+            for i, p in enumerate(paquetes)
+            if not visitados[i]
+        )
+
+        if hora_actual + tiempo_restante >= mejor_hora_finalizacion:
             return
 
         for i, paquete in enumerate(paquetes):
