@@ -1,30 +1,237 @@
-# Entrega 3: Divide y Vencerás y Comparativa Final
+# ENTREGA 3: DIVIDE Y VENCERÁS, PROGRAMACIÓN DINÁMICA Y COMPARATIVA FINAL
 
 ## 1. Solución con Divide y Vencerás
-El módulo implementado en `divide_y_venceras.py` descompone la validación del problema en subproblemas independientes:
-- **Dividir:** Divide la lista de paquetes recursivamente a la mitad (`izq` a `medio` y `medio + 1` a `der`).
-- **Vencer:** Resuelve de forma independiente la validación de pesos y acumulación de capacidad para cada submitad de paquetes.
-- **Combinar:** Suma los pesos de ambas mitades para comprobar si el total se encuentra dentro de la capacidad límite permitida de la flota.
 
-### Análisis de Complejidad
-- **Complejidad Temporal:** $\mathcal{O}(n)$ gracias al recorrido eficiente por mitades mediante partición recursiva.
-- **Complejidad Espacial:** $\mathcal{O}(\log n)$ debido a la profundidad de la pila de llamadas recursivas.
+Para esta técnica se implementó el algoritmo en el archivo `divide_y_venceras.py`. Su objetivo es dividir la validación de los paquetes en partes más pequeñas para comprobar si el peso total cumple con la capacidad permitida.
+
+El algoritmo utiliza tres fases principales:
+
+### Dividir
+
+Se toma la lista de paquetes y se divide recursivamente en dos mitades. Para esto se calcula un punto medio que permite separar los paquetes en dos grupos más pequeños.
+
+### Vencer
+
+Cada mitad se procesa de manera independiente. En esta fase se realizan los cálculos necesarios para obtener el peso acumulado de cada grupo de paquetes.
+
+### Combinar
+
+Después de procesar las dos mitades, se suman los resultados obtenidos para comprobar si el peso total se encuentra dentro de la capacidad permitida.
+
+De esta manera, el algoritmo permite realizar la validación mediante la división del problema en partes más pequeñas y la combinación de sus resultados.
+
+### Análisis de complejidad
+
+La complejidad temporal del algoritmo es O(n), debido a que los paquetes se procesan una sola vez y los resultados de las dos mitades se combinan mediante una operación constante.
+
+La complejidad espacial es O(log n), debido a la profundidad de las llamadas recursivas que se generan al dividir la lista en dos partes.
+
+Para analizar el comportamiento temporal se puede utilizar el Teorema Maestro, considerando la siguiente recurrencia:
+
+T(n) = 2T(n/2) + O(1)
+
+Al resolverla se obtiene una complejidad temporal de O(n).
+
+Es importante aclarar que esta implementación se enfoca en verificar las restricciones de peso. No busca directamente la asignación óptima de todos los paquetes a los camiones.
 
 ---
 
-## 2. Comparativa Final de Rendimiento
+## 2. Solución con Programación Dinámica
 
-| Técnica | Complejidad Temporal | Complejidad Espacial | ¿Solución óptima? | Tiempo real ($n=12$) | Tiempo real ($n=24$) |
-| :--- | :--- | :--- | :---: | :---: | :---: |
-| **Fuerza Bruta** | $\mathcal{O}(m^n \cdot m \cdot k! \cdot k)$ | $\mathcal{O}(m^n \cdot n)$ | Sí | $13.0848\text{ s}$ | Inviable |
-| **Greedy** | $\mathcal{O}(n \log n)$ | $\mathcal{O}(n)$ | No (Heurística) | $0.000046\text{ s}$ | $0.002315\text{ s}$ |
-| **Divide y Vencerás** | $\mathcal{O}(n)$ | $\mathcal{O}(\log n)$ | Sí (Verificación) | $0.000168\text{ s}$ | $0.000309\text{ s}$ |
+Para esta técnica se implementó el algoritmo en el archivo `programacion_dinamica.py`. Su objetivo es encontrar la mayor cantidad posible de paquetes que se puedan asignar a los camiones, respetando las restricciones de capacidad y tiempo.
 
-*(Nota: Las gráficas unificadas e independientes generadas por `comparativa.py` se encuentran respaldadas en la ruta `src/` del repositorio).*
+La programación dinámica utiliza memoización para guardar los resultados de los estados que ya fueron calculados. Esto permite reutilizar información y evitar repetir cálculos cuando se vuelve a encontrar un mismo estado.
+
+### Funcionamiento del algoritmo
+
+El algoritmo procesa los paquetes de manera recursiva y evalúa dos posibilidades para cada uno:
+
+- No asignar el paquete y continuar con el siguiente.
+- Intentar asignar el paquete a alguno de los camiones disponibles, siempre que cumpla las restricciones.
+
+Para tomar estas decisiones se revisan diferentes condiciones, como el peso del paquete, el tiempo de viaje, el tiempo de entrega, las ventanas de tiempo y la capacidad restante de cada camión.
+
+### Estado del problema
+
+Para identificar cada estado se utiliza la siguiente información:
+
+- El índice del paquete que se está evaluando.
+- La capacidad restante de cada camión.
+- El tiempo actual de cada camión.
+
+Esta información se representa mediante una tupla que permite identificar de manera única las condiciones actuales de la búsqueda.
+
+### Memoización
+
+El algoritmo utiliza un diccionario llamado `memo`, donde almacena los resultados de los estados que ya fueron procesados.
+
+Antes de calcular un estado, consulta si este ya se encuentra almacenado. Si existe, reutiliza el resultado anterior. Si no existe, evalúa las posibilidades de asignación y guarda el resultado obtenido.
+
+De esta manera, se evita repetir el mismo trabajo cuando se presentan estados iguales.
+
+### Análisis de complejidad
+
+La complejidad de la programación dinámica depende de la cantidad de estados diferentes que se pueden generar durante la ejecución.
+
+Para realizar una estimación se consideran las siguientes variables:
+
+- n: cantidad de paquetes.
+- m: cantidad de camiones.
+- C: cantidad de valores posibles de capacidad restante.
+- T: cantidad de valores posibles de tiempo.
+
+Considerando que las capacidades y los tiempos son valores discretos y acotados, la cantidad de estados posibles puede estimarse a partir de las combinaciones de capacidad y tiempo de los diferentes camiones.
+
+La complejidad temporal estimada es:
+
+O(n · (C · T)^m · m(m+n))
+
+Esta expresión considera la cantidad de estados que pueden generarse, el recorrido de los camiones y el trabajo necesario para construir las asignaciones.
+
+La complejidad espacial depende de la cantidad de estados almacenados en el diccionario de memoización. En el peor caso puede crecer considerablemente, ya que cada estado conserva información sobre el resultado y las asignaciones encontradas.
+
+La programación dinámica permite encontrar una solución óptima respecto a la cantidad de paquetes asignados, siempre que se evalúen todos los estados válidos y se conserve correctamente la información de cada estado.
 
 ---
 
-## 3. Conclusiones
-- **Aprendizaje:** La aplicación de diferentes paradigmas demuestra que no existe una única solución ideal; la elección depende estrictamente del tamaño de la instancia y del balance necesario entre velocidad y precisión.
-- **Escenarios de uso:** Fuerza Bruta es útil exclusivamente para validar teoría con pocos datos; Greedy destaca en tiempo real donde la velocidad es crítica; y Divide y Vencerás ofrece una verificación sumamente veloz y lineal.
-- **Limitación encontrada:** La alta sensibilidad al ruido operativo del procesador en mediciones a nivel de microsegundos requirió la implementación de ciclos de promedio iterativo para estabilizar los resultados empíricos de D&V.
+## 3. Comparativa final de las cinco técnicas
+
+Para evaluar el comportamiento de las diferentes soluciones se compararon las cinco técnicas implementadas durante el proyecto: Fuerza Bruta, Greedy, Backtracking, Divide y Vencerás y Programación Dinámica.
+
+La comparación tiene en cuenta la complejidad temporal, la complejidad espacial, la capacidad de encontrar una solución óptima y los tiempos obtenidos durante las pruebas.
+
+### 3.1. Comparación de complejidades
+
+| Técnica | Complejidad temporal | Complejidad espacial | ¿Encuentra solución óptima? |
+|---|---|---|---|
+| Fuerza Bruta | O(m^n · m · k! · k) | O(m^n · n) | Sí, mediante búsqueda exhaustiva |
+| Greedy | O(n log n) | O(n) | No, utiliza una estrategia heurística |
+| Backtracking | O(m(m+1)^n) | O(n+m) | Sí, mediante búsqueda completa |
+| Divide y Vencerás | O(n) | O(log n) | No aplica, realiza una verificación |
+| Programación Dinámica | O(n · (C · T)^m · m(m+n)) | Depende de los estados almacenados | Sí, mediante evaluación de estados |
+
+Donde n representa la cantidad de paquetes, m la cantidad de camiones, k el parámetro utilizado para representar las rutas y C y T representan las cantidades de valores posibles de capacidad y tiempo.
+
+Las complejidades corresponden a los modelos de análisis utilizados para cada implementación. En particular, la complejidad de Programación Dinámica depende de que las capacidades y los tiempos tengan valores discretos y acotados.
+
+### 3.2. Resultados de las pruebas de rendimiento
+
+Para comparar el comportamiento de los algoritmos se realizaron pruebas con cuatro tamaños de entrada: pequeño, mediano, grande y de estrés.
+
+Las pruebas se realizaron con 6, 12, 18 y 24 paquetes, respectivamente.
+
+Para los algoritmos que presentaron tiempos de ejecución muy elevados se estableció un límite de 60 segundos. Cuando se alcanzó este límite, se registró el resultado como Timeout.
+
+Los resultados obtenidos fueron los siguientes:
+
+| Instancia | Paquetes | Fuerza Bruta | Greedy | Backtracking |
+|---|---:|---:|---:|---:|
+| Pequeño | 6 | 0.000405 s | 0.000021 s | 2.1604 s |
+| Mediano | 12 | 13.084836 s | 0.000046 s | 17.5681 s |
+| Grande | 18 | Inviable | 0.000589 s | Timeout (60 s) |
+| Estrés | 24 | Inviable | 0.002315 s | Timeout (60 s) |
+
+Los tiempos de las otras dos técnicas se presentan a continuación:
+
+| Instancia | Paquetes | Divide y Vencerás | Programación Dinámica |
+|---|---:|---:|---:|
+| Pequeño | 6 | 0.00072 s | 1.2 s |
+| Mediano | 12 | 0.00079 s | 15.5 s |
+| Grande | 18 | 0.00115 s | Timeout (60 s) |
+| Estrés | 24 | 0.00158 s | Timeout (60 s) |
+
+Los valores de Divide y Vencerás y Programación Dinámica corresponden a estimaciones visuales de las gráficas generadas. Los tiempos exactos se encuentran en los resultados de ejecución del programa.
+
+### 3.3. Análisis de los resultados
+
+Los resultados obtenidos permiten observar diferencias importantes entre las cinco técnicas.
+
+Greedy presentó los menores tiempos de ejecución en todas las pruebas. Esto se debe a que toma decisiones utilizando criterios inmediatos y no necesita explorar todas las combinaciones posibles. Su principal ventaja es la rapidez, aunque no garantiza encontrar la mejor solución.
+
+Divide y Vencerás también presentó tiempos muy bajos. En las pruebas realizadas, su tiempo aumentó ligeramente a medida que creció la cantidad de paquetes. Esto demuestra que la implementación es eficiente para la tarea de validación que realiza.
+
+Por otro lado, Fuerza Bruta presentó un aumento considerable en su tiempo de ejecución. Para 12 paquetes necesitó aproximadamente 13 segundos y, para los casos de 18 y 24 paquetes, no logró finalizar dentro de las condiciones establecidas para las pruebas.
+
+Backtracking también presentó tiempos elevados. Aunque utiliza condiciones de poda para descartar asignaciones que no cumplen las restricciones, para 18 y 24 paquetes alcanzó el límite de 60 segundos sin finalizar.
+
+Finalmente, Programación Dinámica presentó un comportamiento diferente al esperado inicialmente. Para 6 paquetes su ejecución fue cercana a 1,2 segundos y para 12 paquetes aumentó aproximadamente a 15,5 segundos. En los casos de 18 y 24 paquetes alcanzó el límite de ejecución establecido.
+
+Esto demuestra que, aunque la programación dinámica utiliza memoización para evitar cálculos repetidos, la cantidad de estados que debe almacenar y evaluar puede crecer considerablemente cuando aumenta el tamaño del problema.
+
+### 3.4. Análisis de las gráficas
+
+Para complementar los resultados se generaron gráficas individuales que permiten observar el comportamiento de los algoritmos a medida que aumenta la cantidad de paquetes.
+
+En la gráfica de Fuerza Bruta se evidencia el crecimiento del tiempo de ejecución, lo que demuestra las dificultades de utilizar una búsqueda exhaustiva cuando aumenta el número de posibilidades.
+
+La gráfica de Greedy muestra tiempos de ejecución muy bajos en comparación con las demás técnicas, manteniendo un buen rendimiento en los diferentes tamaños de entrada.
+
+En la gráfica de Backtracking se observa que las podas permiten descartar algunas posibilidades, pero no son suficientes para evitar tiempos elevados en los casos de mayor tamaño.
+
+La gráfica de Divide y Vencerás muestra un crecimiento moderado del tiempo de ejecución entre las cuatro instancias. Esto evidencia el comportamiento eficiente de la implementación para la validación realizada.
+
+Por último, la gráfica de Programación Dinámica muestra un incremento considerable entre las instancias de 6 y 12 paquetes. Para las instancias de 18 y 24 paquetes se alcanza el límite de ejecución de 60 segundos.
+
+En conjunto, las gráficas permiten complementar el análisis teórico y muestran que el comportamiento real de los algoritmos depende tanto de su complejidad como de las características de los datos y de las operaciones que realizan.
+
+### 3.5. ¿Qué técnica es la más adecuada para este problema?
+
+La elección de la técnica depende de lo que se busca obtener y de las restricciones del problema.
+
+Greedy es una alternativa conveniente cuando se necesita una respuesta rápida y se acepta que el resultado no necesariamente sea óptimo.
+
+Si se necesita encontrar una solución óptima, Backtracking y Programación Dinámica son alternativas más apropiadas, ya que permiten explorar las posibilidades de asignación y respetar las restricciones establecidas.
+
+Backtracking utiliza podas para evitar continuar por caminos que no cumplen las condiciones, mientras que Programación Dinámica utiliza memoización para reutilizar resultados de estados que ya fueron calculados.
+
+Divide y Vencerás resulta adecuado para realizar la validación de capacidad mediante la división del conjunto de paquetes, aunque no reemplaza un algoritmo que busque la mejor distribución de los paquetes entre los camiones.
+
+En conclusión, no existe una única técnica que sea la mejor para todos los escenarios. La elección depende de si se prioriza la velocidad, la optimalidad, el consumo de memoria o el tamaño de los datos.
+
+---
+
+## 4. Conclusiones
+
+Durante el desarrollo del proyecto se implementaron cinco técnicas algorítmicas diferentes para abordar el problema de asignación de paquetes a camiones. Esto permitió comprender que un mismo problema puede resolverse mediante estrategias distintas y que cada una presenta ventajas y limitaciones.
+
+La fuerza bruta permitió comprender cómo funciona una búsqueda exhaustiva y cómo aumenta su costo cuando crece el número de posibilidades.
+
+Greedy mostró la importancia de utilizar criterios de decisión que permitan obtener resultados rápidamente, aunque sin garantizar la mejor solución.
+
+Con Backtracking se aprendió a explorar diferentes alternativas mediante recursión, utilizando condiciones de poda para evitar continuar por caminos que no cumplen las restricciones.
+
+La programación dinámica permitió comprender la importancia de identificar estados, dividir el problema en subproblemas y almacenar resultados mediante memoización para evitar cálculos repetidos.
+
+Por su parte, Divide y Vencerás permitió trabajar con partes más pequeñas del conjunto de paquetes y comprender cómo se pueden combinar los resultados parciales para realizar una verificación.
+
+### 4.1. Escenarios de aplicación
+
+Cada paradigma puede utilizarse en diferentes situaciones reales:
+
+- Fuerza Bruta: puede utilizarse en problemas pequeños o como referencia para comprobar la exactitud de otros algoritmos.
+- Greedy: es útil en situaciones donde se necesitan decisiones rápidas, como la asignación inmediata de recursos.
+- Backtracking: puede aplicarse en problemas donde se deben explorar diferentes combinaciones respetando varias restricciones.
+- Divide y Vencerás: es adecuado para problemas que pueden separarse en subproblemas independientes y cuyos resultados pueden combinarse.
+- Programación Dinámica: es útil en problemas de optimización que presentan subproblemas repetidos y permiten almacenar sus resultados para reutilizarlos.
+
+### 4.2. Limitaciones encontradas
+
+Durante el desarrollo se identificaron diferentes limitaciones.
+
+La fuerza bruta y Backtracking pueden presentar tiempos de ejecución elevados cuando aumenta la cantidad de paquetes, debido al número de posibilidades que deben explorar.
+
+Greedy depende del criterio utilizado para tomar las decisiones, por lo que puede obtener resultados que no sean los mejores para el problema completo.
+
+Divide y Vencerás está limitado al alcance de la validación implementada y no realiza por sí mismo la asignación óptima de los paquetes.
+
+La programación dinámica puede requerir una cantidad considerable de memoria cuando aumenta el número de estados posibles. Además, su eficiencia depende de que los estados puedan representarse y almacenarse correctamente.
+
+Finalmente, durante las pruebas de rendimiento se identificó que los tiempos muy pequeños pueden verse afectados por factores externos, como los procesos que ejecuta el computador. Por esta razón, es importante realizar varias mediciones y utilizar promedios para obtener resultados más estables.
+
+### 4.3. Conclusión general
+
+El desarrollo de este proyecto permitió aplicar diferentes paradigmas de diseño de algoritmos a un mismo problema, comparar sus resultados y comprender la importancia de analizar tanto la complejidad teórica como el rendimiento experimental.
+
+Se pudo observar que algunas técnicas priorizan la rapidez, mientras que otras buscan encontrar soluciones óptimas mediante la exploración de diferentes posibilidades.
+
+En general, la experiencia permitió fortalecer los conocimientos sobre recursión, búsqueda, poda, división de problemas y memoización, además de comprender cómo seleccionar una estrategia algorítmica dependiendo de las características y necesidades de un problema real.
