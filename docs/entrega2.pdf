@@ -1,0 +1,26 @@
+# Entrega 2: Algoritmos Greedy y Backtracking
+
+## 1. Solución Greedy (Voraz)
+El algoritmo implementado en `greedy.py` toma decisiones locales óptimas paso a paso:
+1. **Ordenamiento Voraz:** Organiza los paquetes priorizándolos por su ventana de inicio (`ventana_inicio` y `ventana_fin`).
+2. **Asignación Irreversible:** Recorre cada paquete ordenado y lo asigna de inmediato al primer camión que tenga capacidad suficiente y cumpla con una ruta temporalmente válida.
+
+### Análisis de Complejidad y Rendimiento
+- **Complejidad Temporal:** $\mathcal{O}(n \log n)$ debido al ordenamiento inicial de los paquetes.
+- **Complejidad Espacial:** $\mathcal{O}(n)$ para almacenar las estructuras de asignación por camión.
+- **Análisis Crítico:** Si bien el algoritmo Greedy es extremadamente rápido (ejecutándose en fracciones de milisegundo), al tomar decisiones irreversibles puede fallar en encontrar una solución global óptima si un paquete prioritario bloquea la capacidad de un camión requerido para paquetes posteriores más restrictivos.
+
+---
+
+## 2. Comparativa Parcial (Fuerza Bruta vs. Greedy)
+
+| Instancia | Paquetes ($n$) | Tiempo Fuerza Bruta | Tiempo Greedy |
+| :--- | :---: | :---: | :---: |
+| **Pequeño** | 6 | $0.000405\text{ s}$ | $0.000021\text{ s}$ |
+| **Mediano** | 12 | $13.084836\text{ s}$ | $0.000046\text{ s}$ |
+| **Grande** | 18 | Inviable | $0.000589\text{ s}$ |
+| **Estrés** | 24 | Inviable | $0.002315\text{ s}$ |
+
+### Discusión de Trade-Offs
+- **Velocidad:** Greedy supera ampliamente a Fuerza Bruta a medida que escala el problema, pasando de segundos/minutos a milisegundos.
+- **Optimalidad:** Fuerza Bruta garantiza el óptimo absoluto explorando el 100% de las opciones, mientras que Greedy prioriza la velocidad sacrificando la exploración global.

@@ -1,0 +1,30 @@
+# Entrega 3: Divide y Vencerás y Comparativa Final
+
+## 1. Solución con Divide y Vencerás
+El módulo implementado en `divide_y_venceras.py` descompone la validación del problema en subproblemas independientes:
+- **Dividir:** Divide la lista de paquetes recursivamente a la mitad (`izq` a `medio` y `medio + 1` a `der`).
+- **Vencer:** Resuelve de forma independiente la validación de pesos y acumulación de capacidad para cada submitad de paquetes.
+- **Combinar:** Suma los pesos de ambas mitades para comprobar si el total se encuentra dentro de la capacidad límite permitida de la flota.
+
+### Análisis de Complejidad
+- **Complejidad Temporal:** $\mathcal{O}(n)$ gracias al recorrido eficiente por mitades mediante partición recursiva.
+- **Complejidad Espacial:** $\mathcal{O}(\log n)$ debido a la profundidad de la pila de llamadas recursivas.
+
+---
+
+## 2. Comparativa Final de Rendimiento
+
+| Técnica | Complejidad Temporal | Complejidad Espacial | ¿Solución óptima? | Tiempo real ($n=12$) | Tiempo real ($n=24$) |
+| :--- | :--- | :--- | :---: | :---: | :---: |
+| **Fuerza Bruta** | $\mathcal{O}(m^n \cdot m \cdot k! \cdot k)$ | $\mathcal{O}(m^n \cdot n)$ | Sí | $13.0848\text{ s}$ | Inviable |
+| **Greedy** | $\mathcal{O}(n \log n)$ | $\mathcal{O}(n)$ | No (Heurística) | $0.000046\text{ s}$ | $0.002315\text{ s}$ |
+| **Divide y Vencerás** | $\mathcal{O}(n)$ | $\mathcal{O}(\log n)$ | Sí (Verificación) | $0.000168\text{ s}$ | $0.000309\text{ s}$ |
+
+*(Nota: Las gráficas unificadas e independientes generadas por `comparativa.py` se encuentran respaldadas en la ruta `src/` del repositorio).*
+
+---
+
+## 3. Conclusiones
+- **Aprendizaje:** La aplicación de diferentes paradigmas demuestra que no existe una única solución ideal; la elección depende estrictamente del tamaño de la instancia y del balance necesario entre velocidad y precisión.
+- **Escenarios de uso:** Fuerza Bruta es útil exclusivamente para validar teoría con pocos datos; Greedy destaca en tiempo real donde la velocidad es crítica; y Divide y Vencerás ofrece una verificación sumamente veloz y lineal.
+- **Limitación encontrada:** La alta sensibilidad al ruido operativo del procesador en mediciones a nivel de microsegundos requirió la implementación de ciclos de promedio iterativo para estabilizar los resultados empíricos de D&V.
