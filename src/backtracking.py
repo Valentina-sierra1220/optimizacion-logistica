@@ -1,6 +1,3 @@
-import json
-import time
-from pathlib import Path
 
 def asignar_paquetes_backtracking(paquetes, camiones):
     mejor_solucion = []
@@ -73,46 +70,3 @@ def asignar_paquetes_backtracking(paquetes, camiones):
     backtrack(0, [])
     return max_paquetes, mejor_solucion
 
-
-
-def main():
-    # Cambia esto por caso_mediano.txt o caso_grande.txt para probar la escalabilidad
-    ruta_archivo = Path("datos/caso_grande.txt") 
-    
-    with open(ruta_archivo, "r", encoding="utf-8") as f:
-        datos = json.load(f)
-        
-    camiones = datos["camiones"]
-    paquetes = datos["paquetes"]
-    
-    print("\n------------------------------")
-    print(" OPTIMIZACION LOGISTICA")
-    print(" BACKTRACKING")
-    print("==============================")
-    print(f"\nCantidad de camiones: {len(camiones)}")
-    print(f"Cantidad de paquetes: {len(paquetes)}")
-    
-    inicio = time.perf_counter()
-    max_paquetes, asignaciones = asignar_paquetes_backtracking(paquetes, camiones)
-    tiempo = time.perf_counter() - inicio
-    
-    if max_paquetes == 0:
-        print("\nNo existe una asignacion factible.")
-    else:
-        print(f"\nPaquetes entregados con éxito: {max_paquetes} de {len(paquetes)}")
-        
-    print(f"Tiempo de ejecución: {tiempo:.8f} segundos")
-    
-    entregas_por_camion = {c["id"]: [] for c in camiones}
-    for id_paquete, id_camion in asignaciones:
-        entregas_por_camion[id_camion].append(id_paquete)
-        
-    for id_camion, lista_paquetes in entregas_por_camion.items():
-        print(f"\nCamión: {id_camion}")
-        if lista_paquetes:
-            print(f"  -> Paquetes asignados: {', '.join(lista_paquetes)}")
-        else:
-            print("  -> Sin paquetes asignados")
-
-if __name__ == "__main__":
-    main()
