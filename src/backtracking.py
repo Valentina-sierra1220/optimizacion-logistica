@@ -1,247 +1,118 @@
-def backtracking(paquetes, camiones):
+import json
+import time
+from pathlib import Path
 
-    asignacion = []
-    cargas = [0] * len(camiones)
-    mejor_solucion = None
-    mejor_tiempo_finalizacion = float("inf")
+def asignar_paquetes_backtracking(paquetes, camiones):
+    mejor_solucion = []
+    max_paquetes = -1
+    
+    # Mantenemos el estado de los camiones para modificarlo y restaurarlo
+    estado_camiones = {
+        c['id']: {'capacidad': c['capacidad'], 'tiempo': c['hora_inicio']} 
+        for c in camiones
+    }
 
-
-    def asignar_paquete(indice, asignacion, cargas):
-        nonlocal mejor_solucion,mejor_tiempo_finalizacion
-
-        #caso base
-                
-        if indice == len(paquetes):
-
-            paquetes_por_camion = [[] for _ in camiones]
-
-            for i, camion in enumerate(asignacion):
-                paquetes_por_camion[camion].append(paquetes[i])
-
-            tiempos = []
-
-            for i in range(len(camiones)):
-                ruta, hora = buscar_mejor_ruta(
-                    paquetes_por_camion[i], camiones[i]
-                )
-
-                if ruta is None:
-                    return
-
-                tiempos.append(hora)
-
-            tiempo_total = max(tiempos)
-
-            if tiempo_total < mejor_tiempo_finalizacion:
-                mejor_tiempo_finalizacion = tiempo_total
-                mejor_solucion = asignacion.copy()
-
-            return
-
-
-        # Poda por capacidad restante
-        peso_restante = sum(
-        p["peso"] for p in paquetes[indice:]
-                                                        )
-
-        capacidad_restante = sum(
-            camiones[i]["capacidad"] - cargas[i]
-                for i in range(len(camiones))   )
-
-        if peso_restante > capacidad_restante:
-            return
-
-        for i in range(indice, len(paquetes)):
-            if not any(
-                cargas[c] + paquetes[i]["peso"] <= camiones[c]["capacidad"]
-                for c in range(len(camiones))
-            ):
-                return
-
-
-        paquete = paquetes[indice]
-        peso = paquete["peso"]
-
-
-        #probar camiones
-        for camion in range(len(camiones)):
-            # Poda por simetría
+    # Función de poda: verifica si el movimiento es válido antes de hacerlo
+    def es_valida(paquete, camion, estado_actual):
+        if estado_actual['capacidad'] < paquete['peso']:
+            return False
             
-          
-            capacidad = camiones[camion]["capacidad"]
-            nueva_carga = cargas[camion] + peso
+        tiempo_llegada = max(estado_actual['tiempo'] + paquete['tiempo_viaje'], paquete['ventana_inicio'])
+        tiempo_fin_entrega = tiempo_llegada + paquete['tiempo_entrega']
+        
+        if tiempo_llegada > paquete['ventana_fin'] or tiempo_fin_entrega > camion['hora_fin']:
+            return False
+            
+        return True
 
-            #poda por capacidad
-            if nueva_carga > capacidad:
-                continue
-
-            # Poda por duración mínima del turno
-            tiempo_base_camion = sum(
-            paquetes[j]["tiempo_viaje"] + paquetes[j]["tiempo_entrega"]
-                for j in range(indice)
-            if asignacion[j] == camion)
-
-            tiempo_base_camion += (
-                paquete["tiempo_viaje"] + paquete["tiempo_entrega"])
-
-            duracion_turno = (
-                camiones[camion]["hora_fin"] - camiones[camion]["hora_inicio"])
-
-            if tiempo_base_camion > duracion_turno:
-                continue
-
-
-                # Registrar decisión
-            asignacion.append(camion)
-            cargas[camion] = nueva_carga
-
-            # Poda por factibilidad parcial de la ruta
-            paquetes_parciales = [
-                paquetes[j]
-                for j in range(indice + 1)
-                if asignacion[j] == camion
-            ]
-
-            if not existe_ruta_valida(
-                paquetes_parciales,
-                camiones[camion]
-            ):
-                asignacion.pop()
-                cargas[camion] -= peso
-                continue
-      
-
-            # Avanzar recursivamente
-            asignar_paquete(indice + 1, asignacion, cargas)
-
-
-            #retrocedemos
-            asignacion.pop()
-            cargas[camion] -= peso
-
-
-    asignar_paquete(0, asignacion, cargas)
-
-    return mejor_solucion
-
-
-
-def buscar_mejor_ruta(paquetes, camion):
-    ruta_actual = []
-    visitados = [False] * len(paquetes)
-
-    mejor_ruta = None
-    mejor_hora_finalizacion = float("inf")
-    def explorar(hora_actual, tiempo_restante):
-        nonlocal mejor_ruta, mejor_hora_finalizacion
-
-        # Caso base: todos los paquetes tienen un lugar en la ruta
-        if len(ruta_actual) == len(paquetes):
-            if hora_actual < mejor_hora_finalizacion:
-                mejor_hora_finalizacion = hora_actual
-                mejor_ruta = ruta_actual.copy()
+    def backtrack(idx_paquete, asignacion_actual):
+        nonlocal mejor_solucion, max_paquetes
+        
+        # Guardar la mejor solución encontrada hasta el momento
+        if len(asignacion_actual) > max_paquetes:
+            max_paquetes = len(asignacion_actual)
+            mejor_solucion = asignacion_actual[:]  # Guardar copia de la lista
+            
+        # Caso base: si ya revisamos todos los paquetes, retrocedemos
+        if idx_paquete == len(paquetes):
             return
+            
+        paquete = paquetes[idx_paquete]
+        
+        # --- RAMA 1: No asignar este paquete (Explorar sin elegir) ---
+        backtrack(idx_paquete + 1, asignacion_actual)
+        
+        # --- RAMA 2: Intentar asignar el paquete a cada camión ---
+        for camion in camiones:
+            estado = estado_camiones[camion['id']]
+            
+            # PODA: solo entramos si el movimiento respeta las reglas
+            if es_valida(paquete, camion, estado):
+                
+                # Guardar el estado anterior para poder deshacer
+                cap_ant = estado['capacidad']
+                tiempo_ant = estado['tiempo']
+                
+                tiempo_llegada = max(estado['tiempo'] + paquete['tiempo_viaje'], paquete['ventana_inicio'])
+                nuevo_tiempo = tiempo_llegada + paquete['tiempo_entrega']
+                
+                # 1. ELEGIR[cite: 3]
+                estado['capacidad'] -= paquete['peso']
+                estado['tiempo'] = nuevo_tiempo
+                asignacion_actual.append((paquete['id'], camion['id']))
+                
+                # 2. EXPLORAR[cite: 3]
+                backtrack(idx_paquete + 1, asignacion_actual)
+                
+                # 3. DESHACER (Backtrack)[cite: 3]
+                estado['capacidad'] = cap_ant
+                estado['tiempo'] = tiempo_ant
+                asignacion_actual.pop()
 
-        if hora_actual + tiempo_restante >= mejor_hora_finalizacion:
-            return
-
-        # Poda por ventanas de tiempo perdidas
-        for j, paquete in enumerate(paquetes):
-            if not visitados[j]:
-                if hora_actual + paquete["tiempo_viaje"] > paquete["ventana_fin"]:
-                    return
-
-        for i, paquete in enumerate(paquetes):
-
-            if visitados[i]:
-                continue
-
-            tiempo_llegada = hora_actual + paquete["tiempo_viaje"]
-
-            if tiempo_llegada < paquete["ventana_inicio"]:
-                tiempo_llegada = paquete["ventana_inicio"]
-
-            if tiempo_llegada > paquete["ventana_fin"]:
-                continue
-
-            tiempo_final = tiempo_llegada + paquete["tiempo_entrega"]
-            # Poda por hora de finalización del turno
-            if tiempo_final > camion["hora_fin"]:
-                continue
-
-            # Tomar la decisión
-            visitados[i] = True
-            ruta_actual.append(paquete)
-
-            # Explorar la siguiente entrega
-            explorar(tiempo_final,tiempo_restante - paquete["tiempo_viaje"] - paquete["tiempo_entrega"])
-
-            # Retroceder
-            ruta_actual.pop()
-            visitados[i] = False
-
-
-    tiempo_restante = sum(
-    p["tiempo_viaje"] + p["tiempo_entrega"]
-    for p in paquetes)
-
-    explorar(camion["hora_inicio"], tiempo_restante)
-
-    return mejor_ruta, mejor_hora_finalizacion
+    # Iniciar la recursión con el paquete 0 y una asignación vacía
+    backtrack(0, [])
+    return max_paquetes, mejor_solucion
 
 
 
+def main():
+    # Cambia esto por caso_mediano.txt o caso_grande.txt para probar la escalabilidad
+    ruta_archivo = Path("datos/caso_grande.txt") 
+    
+    with open(ruta_archivo, "r", encoding="utf-8") as f:
+        datos = json.load(f)
+        
+    camiones = datos["camiones"]
+    paquetes = datos["paquetes"]
+    
+    print("\n------------------------------")
+    print(" OPTIMIZACION LOGISTICA")
+    print(" BACKTRACKING")
+    print("==============================")
+    print(f"\nCantidad de camiones: {len(camiones)}")
+    print(f"Cantidad de paquetes: {len(paquetes)}")
+    
+    inicio = time.perf_counter()
+    max_paquetes, asignaciones = asignar_paquetes_backtracking(paquetes, camiones)
+    tiempo = time.perf_counter() - inicio
+    
+    if max_paquetes == 0:
+        print("\nNo existe una asignacion factible.")
+    else:
+        print(f"\nPaquetes entregados con éxito: {max_paquetes} de {len(paquetes)}")
+        
+    print(f"Tiempo de ejecución: {tiempo:.8f} segundos")
+    
+    entregas_por_camion = {c["id"]: [] for c in camiones}
+    for id_paquete, id_camion in asignaciones:
+        entregas_por_camion[id_camion].append(id_paquete)
+        
+    for id_camion, lista_paquetes in entregas_por_camion.items():
+        print(f"\nCamión: {id_camion}")
+        if lista_paquetes:
+            print(f"  -> Paquetes asignados: {', '.join(lista_paquetes)}")
+        else:
+            print("  -> Sin paquetes asignados")
 
-
-
-def existe_ruta_valida(paquetes, camion):
-
-    ruta_actual = []
-    visitados = [False] * len(paquetes)
-
-    def explorar(hora_actual):
-
-        # Caso base: encontramos una ruta completa
-        if len(ruta_actual) == len(paquetes):
-            return True
-
-        # Poda por ventanas de tiempo perdidas
-        for j, paquete in enumerate(paquetes):
-            if not visitados[j]:
-                if hora_actual + paquete["tiempo_viaje"] > paquete["ventana_fin"]:
-                    return False
-
-        # Explorar las posibles entregas
-        for i, paquete in enumerate(paquetes):
-
-            if visitados[i]:
-                continue
-
-            tiempo_llegada = hora_actual + paquete["tiempo_viaje"]
-
-            if tiempo_llegada < paquete["ventana_inicio"]:
-                tiempo_llegada = paquete["ventana_inicio"]
-
-            if tiempo_llegada > paquete["ventana_fin"]:
-                continue
-
-            tiempo_final = tiempo_llegada + paquete["tiempo_entrega"]
-
-            if tiempo_final > camion["hora_fin"]:
-                continue
-
-            # Tomar decisión
-            visitados[i] = True
-            ruta_actual.append(paquete)
-
-            # Explorar
-            if explorar(tiempo_final):
-                return True
-
-            # Retroceder
-            ruta_actual.pop()
-            visitados[i] = False
-
-        return False
-
-    return explorar(camion["hora_inicio"])
+if __name__ == "__main__":
+    main()
