@@ -44,30 +44,6 @@ optimizacion-logistica/
 ├── datos/                                  # Casos de prueba reales (.txt / .json)
 │   ├── caso_pequeno.txt                    # n = 6 paquetes, m = 2 camiones
 │   ├── caso_mediano.txt                    # n = 12 paquetes, m = 3 camiones
-│   └── caso_grande.txt                     # n = 18 paquetes, m = 4 camiones
-│   └── caso_estres.txt                     # n = 24 paquetes, m = 5 camiones
-├── docs/                                   # Informes técnicos y documentación oficial
-│   ├── entrega1.pdf
-│   ├── entrega2.pdf
-│   └── entrega3_final.pdf
-├── src/                                    # Código fuente del proyecto
-│   ├── fuerza_bruta.py                     # Algoritmo de Fuerza Bruta
-│   ├── greedy.py                           # Algoritmo Voraz / Greedy
-│   ├── divide_y_venceras.py                # Algoritmo Divide y Vencerás
-│   ├── comparativa.py                      # Script de benchmarking y métricas
-│   ├── grafica_fuerza_bruta_logistica.png  # Gráfica de rendimiento (Fuerza Bruta)
-│   ├── grafica_greedy_logistica.png        # Gráfica de rendimiento (Greedy)
-│   └── grafica_divide_y_venceras_logistica.png # Gráfica de rendimiento (D&V)
-└── README.md                               # Documentación principal
-
-
-## 📁 Estructura del Repositorio
-
-```text
-optimizacion-logistica/
-├── datos/                                  # Casos de prueba reales (.txt / .json)
-│   ├── caso_pequeno.txt                    # n = 6 paquetes, m = 2 camiones
-│   ├── caso_mediano.txt                    # n = 12 paquetes, m = 3 camiones
 │   ├── caso_grande.txt                     # n = 18 paquetes, m = 4 camiones
 │   └── caso_estres.txt                     # n = 24 paquetes, m = 5 camiones
 ├── docs/                                   # Informes técnicos y documentación oficial
@@ -86,20 +62,21 @@ optimizacion-logistica/
 └── README.md                               # Documentación principal
 
 
+
+
 ## 📊 Descripción del Conjunto de Datos y Casos de Prueba
 
 Para la validación y evaluación experimental de los algoritmos, se estructuraron cuatro casos de prueba ubicados en el directorio `datos/`:
 
-* `caso_pequeno.txt` ($n = 6$)
-* `caso_mediano.txt` ($n = 12$)
-* `caso_grande.txt` ($n = 18$)
-* `caso_estres.txt` ($n = 24$)
+* `caso_pequeno.txt` (`n = 6`)
+* `caso_mediano.txt` (`n = 12`)
+* `caso_grande.txt` (`n = 18`)
+* `caso_estres.txt` (`n = 24`)
 
 Cada caso de prueba parametriza completamente las restricciones del problema logístico:
 
 * **Flota de Camiones:** Capacidad máxima de carga útil y hora operativa de inicio/fin.
 * **Paquetes:** Peso individual, nodo de destino, tiempo de viaje desde el depósito, tiempo de entrega y ventanas de tiempo requeridas (`ventana_inicio` a `ventana_fin`).
-
 
 
 ### 📄 Ejemplo de Estructura de Datos (`datos/caso_grande.txt`)[cite: 1]
