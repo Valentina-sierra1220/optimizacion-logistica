@@ -5,6 +5,18 @@ El algoritmo implementado en `greedy.py` toma decisiones locales óptimas paso a
 1. **Ordenamiento Voraz:** Organiza los paquetes priorizándolos por su ventana de inicio (`ventana_inicio` y `ventana_fin`).
 2. **Asignación Irreversible:** Recorre cada paquete ordenado y lo asigna de inmediato al primer camión que tenga capacidad suficiente y cumpla con una ruta temporalmente válida.
 
+##2. Solución con Backtracking
+La implementación mediante Backtracking explora el mismo espacio de soluciones que la Fuerza Bruta, pero introduce un mecanismo de poda de ramas para descartar caminos inválidos antes de recorrerlos.
+Reglas de Poda (Restricciones aplicadas)
+- El algoritmo evalúa la función es_valida() antes de cada movimiento, cortando la recursión si:
+- Restricción de Capacidad: El peso del paquete supera la capacidad actual restante del camión.
+- Restricción de Ventanas de Tiempo: El tiempo de llegada proyectado supera el límite de ventana_fin del paquete, o si el tiempo de finalización de la entrega excede la hora_fin del turno del camión.
+Análisis de ComplejidadPeor Caso: Teóricamente 
+sigue siendo $\mathcal{O}(n \cdot (m+1)^n)$ si las ventanas de tiempo son tan holgadas y las capacidades tan grandes que ninguna rama se poda.
+Caso Promedio con Poda: El tiempo se reduce drásticamente. Las restricciones de peso y horario 
+eliminan miles de ramificaciones matemáticas inviables desde los primeros niveles del árbol de decisiones.
+
+
 ### Análisis de Complejidad y Rendimiento
 - **Complejidad Temporal:** $\mathcal{O}(n \log n)$ debido al ordenamiento inicial de los paquetes.
 - **Complejidad Espacial:** $\mathcal{O}(n)$ para almacenar las estructuras de asignación por camión.
@@ -14,13 +26,23 @@ El algoritmo implementado en `greedy.py` toma decisiones locales óptimas paso a
 
 ## 2. Comparativa Parcial (Fuerza Bruta vs. Greedy)
 
-| Instancia | Paquetes ($n$) | Tiempo Fuerza Bruta | Tiempo Greedy |
+| Instancia | Paquetes ($n$) | Tiempo Fuerza Bruta | Tiempo Greedy |Tiempo Backtracking |
 | :--- | :---: | :---: | :---: |
-| **Pequeño** | 6 | $0.000405\text{ s}$ | $0.000021\text{ s}$ |
-| **Mediano** | 12 | $13.084836\text{ s}$ | $0.000046\text{ s}$ |
-| **Grande** | 18 | Inviable | $0.000589\text{ s}$ |
-| **Estrés** | 24 | Inviable | $0.002315\text{ s}$ |
+| **Pequeño** | 6 | $0.000405\text{ s}$ | $0.000021\text{ s}$ |$2.1604\text{ s}$
+| **Mediano** | 12 | $13.084836\text{ s}$ | $0.000046\text{ s}$ |$17.5681\text{ s}$
+| **Grande** | 18 | Inviable | $0.000589\text{ s}$ |$60.00\text{ s (Timeout)}$
+| **Estrés** | 24 | Inviable | $0.002315\text{ s}$ |$60.00\text{ s (Timeout)}$
 
-### Discusión de Trade-Offs
-- **Velocidad:** Greedy supera ampliamente a Fuerza Bruta a medida que escala el problema, pasando de segundos/minutos a milisegundos.
-- **Optimalidad:** Fuerza Bruta garantiza el óptimo absoluto explorando el 100% de las opciones, mientras que Greedy prioriza la velocidad sacrificando la exploración global.
+##Discusión de Trade-Offs
+**Velocidad de Ejecución**: El algoritmo Greedy es indiscutiblemente superior, resolviendo los casos de estrés en menos de 3 milisegundos. 
+Backtracking logra procesar el caso mediano (12 paquetes) en un tiempo razonable gracias a las podas, pero sucumbe al timeout de 60 segundos en casos grandes (18+ paquetes). 
+Fuerza Bruta es el más deficiente, colapsando prematuramente.
+
+**Calidad del Resultado (Optimalidad)**: Fuerza Bruta y Backtracking empatan en primer lugar, ya que 
+ambos garantizan entregar la solución global óptima (siempre que tengan tiempo para terminar). 
+Greedy ofrece el peor resultado en calidad, ya que al tomar decisiones irreversibles es susceptible a estancarse en óptimos locales.
+
+**Facilidad de Implementación:** Greedy resulta el más intuitivo y directo de programar, basado simplemente en un ordenamiento previo. 
+Fuerza Bruta requiere un dominio intermedio de recursividad base. 
+Backtracking es el más complejo de diseñar y depurar, ya que exige gestionar meticulosamente el "deshacer" estados (estado['capacidad'] = cap_ant) 
+y validar las métricas de poda en cada nodo.
