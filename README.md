@@ -61,7 +61,7 @@ optimizacion-logistica/
 │   └── grafica_divide_y_venceras_logistica.png # Gráfica de rendimiento (D&V)
 └── README.md                               # Documentación principal
 
-
+```
 
 
 ## 📊 Descripción del Conjunto de Datos y Casos de Prueba
@@ -111,6 +111,7 @@ Cada caso de prueba parametriza completamente las restricciones del problema log
   ]
 }
 
+```
 
 
 ## ⚙️ Instrucciones de Ejecución
