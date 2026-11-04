@@ -5,7 +5,7 @@ def asignar_paquetes_backtracking(paquetes, camiones):
     
     # Mantenemos el estado de los camiones para modificarlo y restaurarlo
     estado_camiones = {
-        c['id']: {'capacidad': c['capacidad'], 'tiempo': c['hora_inicio']} 
+        c['id']: {'capacidad': c['capacidad'], 'tiempo': c['hora_inicio']}  #O(m)
         for c in camiones
     }
 
@@ -26,7 +26,7 @@ def asignar_paquetes_backtracking(paquetes, camiones):
         nonlocal mejor_solucion, max_paquetes
         
         # Guardar la mejor solución encontrada hasta el momento
-        if len(asignacion_actual) > max_paquetes:
+        if len(asignacion_actual) > max_paquetes: #O(n)
             max_paquetes = len(asignacion_actual)
             mejor_solucion = asignacion_actual[:]  # Guardar copia de la lista
             
@@ -37,9 +37,11 @@ def asignar_paquetes_backtracking(paquetes, camiones):
         paquete = paquetes[idx_paquete]
         
         # --- RAMA 1: No asignar este paquete (Explorar sin elegir) ---
+        #T(n-1): Genera 1 llamada recursiva hacia el siguiente nivel
         backtrack(idx_paquete + 1, asignacion_actual)
         
         # --- RAMA 2: Intentar asignar el paquete a cada camión ---
+        # O(m): Bucle que evalúa los 'm' camiones en cada nivel de recursión
         for camion in camiones:
             estado = estado_camiones[camion['id']]
             
@@ -58,7 +60,7 @@ def asignar_paquetes_backtracking(paquetes, camiones):
                 estado['tiempo'] = nuevo_tiempo
                 asignacion_actual.append((paquete['id'], camion['id']))
                 
-                # 2. EXPLORAR[cite: 3]
+                # T(n-1): 2. EXPLORAR. Genera hasta 'm' llamadas recursivas adicionales
                 backtrack(idx_paquete + 1, asignacion_actual)
                 
                 # 3. DESHACER (Backtrack)[cite: 3]
@@ -69,4 +71,9 @@ def asignar_paquetes_backtracking(paquetes, camiones):
     # Iniciar la recursión con el paquete 0 y una asignación vacía
     backtrack(0, [])
     return max_paquetes, mejor_solucion
+
+
+
+
+#Complejidad Temporal Final: O(n * (m+1)^n)
 
